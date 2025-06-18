@@ -496,7 +496,7 @@ public class MedicationTrackingSystem {
                         deleteDoctor(scanner);
                         break;
                     case 5:
-                        System.out.println("\n***** Thank you for using our system. Have a good day. *****");
+                        System.out.println("\n***** Back to the main menu *****");
                         exit = true;
                         break;
                     default:
@@ -506,7 +506,7 @@ public class MedicationTrackingSystem {
                 System.out.println("Invalid input. Must be a numeric value.");
             }
         }
-
+        System.out.println("\nReturning to the main menu...\n");
     }
 
 
@@ -551,7 +551,51 @@ public class MedicationTrackingSystem {
     }
 
     public static void searchDoctor(Scanner scanner) {
-        System.out.println("Search doctor not created yet");};
+    
+        // Ask user to enter the Doctor's ID
+        System.out.print("Enter Doctor ID: ");
+        String idInput = scanner.nextLine().trim();
+        int searchId = Integer.parseInt(idInput);
+    
+        // Ask user to enter the Doctor's first name
+        System.out.print("Enter Doctor First Name: ");
+        String searchFirstName = scanner.nextLine().trim().toLowerCase();
+    
+        // Ask user to enter the Doctor's last name
+        System.out.print("Enter Doctor Last Name: ");
+        String searchLastName = scanner.nextLine().trim().toLowerCase();
+    
+        // This variable keeps track if we found a matching doctor
+        boolean doctorFound = false;
+    
+        // Loop through the list of doctors
+        for (Doctor doctor : doctors) {
+            // Check if the ID matches AND first name matches AND last name matches
+            if (doctor.getId() == searchId &&
+                doctor.getFirstName().toLowerCase().equals(searchFirstName) &&
+                doctor.getLastName().toLowerCase().equals(searchLastName)) {
+    
+                // If match found, print out the doctor's details
+                System.out.println("\nDoctor found:");
+                System.out.println("ID: " + doctor.getId());
+                System.out.println("Name: " + doctor.getFirstName() + " " + doctor.getLastName());
+                System.out.println("Date of Birth: " + doctor.getDateOfBirth());
+                System.out.println("Phone: " + doctor.getPhone());
+                System.out.println("Gender: " + doctor.getGender());
+                System.out.println("Specialization: " + doctor.getSpecialization());
+    
+                // Set found flag to true and stop searching
+                doctorFound = true;
+                break;
+            }
+        }
+    
+        // If doctor was not found, show a message
+        if (!doctorFound) {
+            System.out.println("No doctor found with that ID and full name.");
+        }
+    }
+    
 
     public static void editDoctor(Scanner scanner) {
         System.out.println("Edit doctor not created yet");};

@@ -30,6 +30,11 @@ public abstract class Person {
     }
 
     // Getters and Setters
+
+    public int getId() {
+        return id;
+    }
+    
     public String getFirstName() {
         return firstName;
     }
