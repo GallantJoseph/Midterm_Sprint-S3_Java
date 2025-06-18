@@ -1,15 +1,73 @@
+/*
+    Description: Midterm Sprint - Semester 3 - Person Class
+    Authors:    Ashton Dennis
+                Justin Greenslade
+                Joseph Gallant
+    Dates: June 16, 2025 -
+ */
+
+import java.util.Date;
+
 public abstract class Person {
+    // Private attributes
     private int id;
     private String firstName;
     private String lastName;
-    private int age;
+    private Date dateOfBirth;
     private String phone;
+    private char gender; // (M)ale, (F)emale or (O)ther
 
-    public Person(int id, String firstName, String lastName, int age, String phone) {
+    // Constructors
+    public Person(int id, String firstName, String lastName, Date dateOfBirth, String phone, char gender) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = age;
+        this.dateOfBirth = dateOfBirth;
         this.phone = phone;
+        this.gender = gender;
+    }
+
+    // Getters and Setters
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public char getGender() {
+        return gender;
+    }
+
+    public void setGender(char gender) {
+        this.gender = gender;
+    }
+
+    // toString method override
+    @Override
+    public String toString() {
+        // Last name, first name, gender, and age
+        return String.format("%s, %s", this.lastName, this.firstName);
     }
 }
