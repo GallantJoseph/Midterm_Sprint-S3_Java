@@ -11,7 +11,6 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Date;
 
 public class MedicationTrackingSystem {
     // Private attributes
@@ -350,7 +349,7 @@ public class MedicationTrackingSystem {
                     int quantity = scanner.nextInt();
 
                     System.out.println("Expiry date:");
-                    Date expiry = null; // Temporary until dates are sorted
+                    LocalDate expiry = null; // Temporary until dates are sorted
 
                     Medication medication = new Medication(name, dose, quantity, expiry);
 
