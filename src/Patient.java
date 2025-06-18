@@ -6,8 +6,8 @@
     Dates: June 16, 2025 -
  */
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Patient extends Person {
     // Private attributes
@@ -16,7 +16,7 @@ public class Patient extends Person {
 
     // Constructors
     // Parameterized
-    public Patient(String firstName, String lastName, Date dateOfBirth, String phone,char gender, ArrayList<Medication> medications,
+    public Patient(String firstName, String lastName, LocalDate dateOfBirth, String phone, char gender, ArrayList<Medication> medications,
                    ArrayList<Prescription> prescriptions) {
         super(firstName, lastName, dateOfBirth, phone, gender);
 
@@ -32,5 +32,13 @@ public class Patient extends Person {
     // Add a prescription to the list of prescriptions for the patient
     public void addPrescription(Prescription prescription){
         this.prescriptions.add(prescription);
+    }
+
+    public ArrayList<Medication> getMedications() {
+        return medications;
+    }
+
+    public ArrayList<Prescription> getPrescriptions() {
+        return prescriptions;
     }
 }
