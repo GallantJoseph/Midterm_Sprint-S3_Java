@@ -6,7 +6,7 @@
     Dates: June 16, 2025 -
  */
 
- import java.util.Date;
+ import java.time.LocalDate;
 
  public class Prescription extends Medication {
      // Private attributes
@@ -14,26 +14,29 @@
      private int id;
      private Doctor doctor;
      private Patient patient;
-     private Date prescriptionExpiry;
+     private LocalDate issueDate;
+     private LocalDate prescriptionExpiry;
  
      // Constructors
      // Parameterized
-     public Prescription(Doctor doctor, Patient patient, String medName, double medDose, int medQuantity, Date medExpiry,
-                         Date prescriptionExpiry) {
+     public Prescription(Doctor doctor, Patient patient, String medName, double medDose, int medQuantity, LocalDate issueDate, LocalDate medExpiry,
+                         LocalDate prescriptionExpiry) {
          super(medName, medDose, medQuantity, medExpiry);
          this.id = idCounter++;
          this.doctor = doctor;
          this.patient = patient;
+         this.issueDate = issueDate;
          this.prescriptionExpiry = prescriptionExpiry;
      }
  
      // Parameterized (takes a medication and uses the copy constructor of the Medication class)
-     public Prescription(Doctor doctor, Patient patient, Medication medication,
-                         Date prescriptionExpiry) {
+     public Prescription(Doctor doctor, Patient patient, Medication medication, LocalDate issueDate,
+                         LocalDate prescriptionExpiry) {
          super(medication);
          this.id = idCounter++;
          this.doctor = doctor;
          this.patient = patient;
+         this.issueDate = issueDate;
          this.prescriptionExpiry = prescriptionExpiry;
      }
  
@@ -45,8 +48,12 @@
      public Patient getPatient() {
          return patient;
      }
- 
-     public Date getPrescriptionExpiry() {
+
+     public LocalDate getIssueDate() {
+         return issueDate;
+     }
+
+     public LocalDate getPrescriptionExpiry() {
          return prescriptionExpiry;
      }
  }

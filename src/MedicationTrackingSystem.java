@@ -6,15 +6,17 @@
     Dates: June 16, 2025 -
  */
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 public class MedicationTrackingSystem {
     // Private attributes
-    private ArrayList<Patient> patients;
-    private static ArrayList<Doctor> doctors = new ArrayList<>(); // had to make it static so my static methods could access the list of doctors 
-    private ArrayList<Medication> medications;
+    private static ArrayList<Patient> patients = new ArrayList<>();
+    private static ArrayList<Doctor> doctors = new ArrayList<>();
+    private static ArrayList<Medication> medications = new ArrayList<>();
 
     public static void main(String[] args) {
         boolean exit = false;
@@ -31,7 +33,7 @@ public class MedicationTrackingSystem {
             System.out.println("5. Generate a report");
             System.out.println("6. Exit");
             System.out.println("*************************************************************\n");
-            
+
 //            Sub menus template
 //            Patient Management
 //            1.1 Add Patient
@@ -57,6 +59,7 @@ public class MedicationTrackingSystem {
 //            5.1 Generate a General Report
 //            5.2 Generate a Report for Expired Medication
 //            5.3 Generate a Prescriptions Report by Doctor
+//            5.4 Generate a Report of Patients Prescriptions (past year)
 
             // Validation for the menu selection
             if (scanner.hasNextInt()) {
@@ -92,14 +95,369 @@ public class MedicationTrackingSystem {
     }
 
     // Main program functions
+    // Manage patient Sub Menu
     private static void managePatient(Scanner scanner) {
+        boolean exit = false;
+
+        while (!exit) {
+            System.out.println("\n***** Patient Management *****");
+            System.out.println("\nPlease make a selection:\n");
+            System.out.println("1. Add a Patient");
+            System.out.println("2. Search a Patient");
+            System.out.println("3. Edit a Patient");
+            System.out.println("4. Delete a Patient");
+            System.out.println("5. Assign a Patient to a Doctor");
+            System.out.println("6. Exit");
+            System.out.println("*************************************************************\n");
+
+            if (scanner.hasNextInt()) {
+                int option = scanner.nextInt();
+
+                switch (option) {
+                    case 1:
+                        addPatient(scanner);
+                        break;
+                    case 2:
+                        searchPatient(scanner);
+                        break;
+                    case 3:
+                        //editPatient(scanner);
+                        break;
+                    case 4:
+                        //deletePatient(scanner);
+                        break;
+                    case 5:
+                        //assignPatientDoc(scanner);
+                        break;
+                    case 6:
+                        System.out.println("\n***** Back to the main menu *****");
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println("Please enter a value between 1-6.");
+                }
+            } else {
+                System.out.println("Invalid input. Must be a numeric value.");
+            }
+        }
+
+        System.out.println("\nReturning to the main menu...\n");
+    }
+
+    private static void addPatient(Scanner scanner) {
+        // Variables declaration
+        String firstName = null;
+        String lastName = null;
+        LocalDate dateOfBirth = null;
+        String phone = null;
+        char gender = 0;
+
+        // Header
+        System.out.println("\nAdd New Patient Details (q to quit):");
+
+        boolean exit = false;
+
+        while (!exit) {
+            // First name input
+            System.out.print("First Name: ");
+            if (scanner.hasNext()) {
+                firstName = scanner.next();
+
+                // Quit if the user has entered "q"
+                if (firstName.equals("q")) {
+                    break;
+                }
+            }
+
+            // Last name input
+            System.out.print("Last Name: ");
+            if (scanner.hasNext()) {
+                lastName = scanner.next();
+            }
+
+            // Date of birth input
+            System.out.print("Date of Birth (YYYY-MM-DD): ");
+            if (scanner.hasNext()) {
+                while (true) {
+                    String dateOfBirthStr = scanner.next();
+
+                    // Validate that the format is correct
+                    if (dateOfBirthStr.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                        try {
+                            // Try to parse the date entry into a LocalDate
+                            dateOfBirth = LocalDate.parse(dateOfBirthStr);
+                            break;
+                        } catch (Exception exception) {
+                            System.out.println("Invalid date. Please try again.");
+                        }
+                    } else {
+                        System.out.println("Invalid date format. Please try again.");
+                    }
+                }
+            }
+
+            // Phone number input
+            System.out.print("Phone Number (10 digits): ");
+            if (scanner.hasNext()) {
+                while (true) {
+                    phone = scanner.next();
+
+                    // Validate that the format is correct
+                    if (phone.matches("\\d{10}")) {
+                        break;
+                    } else {
+                        System.out.println("Invalid phone number. Please try again.");
+                    }
+                }
+            }
+
+            // Gender input
+            System.out.print("Gender (M, F, O): ");
+            if (scanner.hasNext()) {
+                while (true) {
+                    String genderStr = scanner.next();
+
+                    // Validate that the format is correct
+                    if (genderStr.matches("[mfoMFO]")) {
+                        gender = genderStr.toUpperCase().charAt(0);
+                        break;
+                    } else {
+                        System.out.println("Invalid gender. Please try again.");
+                    }
+                }
+            }
+
+            // Try to create and add the new patient to the list of patients
+            try {
+                Patient patient = new Patient(firstName, lastName, dateOfBirth, phone, gender, new ArrayList<>(), new ArrayList<>());
+                patients.add(patient);
+
+                System.out.println("Patient added successfully.");
+            } catch (Exception e) {
+                System.out.println("Error while adding the new patient: \n" + e.getMessage());
+            }
+
+            System.out.print("\nWould you like to add another one (Y/N)? ");
+            while (true) {
+                String anotherPatientOpt;
+
+                if (scanner.hasNext()) {
+                    anotherPatientOpt = scanner.next().toUpperCase();
+
+                    if (!anotherPatientOpt.equals("Y") && !anotherPatientOpt.equals("N")) {
+                        System.out.println("Invalid input. Please try again.");
+                    } else if (anotherPatientOpt.equals("N")) {
+                        exit = true;
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        System.out.println("\nReturning to the main menu...\n");
+    }
+
+    private static void searchPatient(Scanner scanner) {
+        // TODO Scanner inputs
+        Patient patient = null;
+
+        String firstName = "First";
+        String lastName = "Last";
+        System.out.print("First Name: ");
+        System.out.print("Last Name: ");
+
+        for (Patient curPatient : patients) {
+            if (curPatient.getFirstName().equals(firstName) && curPatient.getLastName().equals(lastName)) {
+                patient = curPatient;
+                break;
+            }
+        }
+
+        if (patient != null) {
+            Doctor doctor = new Doctor("DocFirst", "DocLast",
+                    LocalDate.of(1975,3,12), "709-987-6543", 'M',
+                    "Java Debugging", new ArrayList<>());
+            doctor.addPatient(patient);
+
+            Medication medication = new Medication("Meds", 100, 1000,LocalDate.now());
+
+            patient.addMedication(medication);
+            patient.addPrescription(new Prescription(doctor, patient, medication, LocalDate.now(),LocalDate.now()));
+
+            System.out.println("Patient Details:");
+            System.out.println("Name: " + patient);
+            System.out.println("Age: " + patient.getAge());
+            System.out.println("Date of Birth: " + patient.getDateOfBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            System.out.println("Phone Number: " + patient.getPhone());
+            System.out.println("Gender: " + patient.getGender());
+
+            System.out.println("\nList of medications:");
+            for (Medication med : patient.getMedications()) {
+                System.out.println("Name: " + med.getName());
+                System.out.println("Dose: " + med.getDose());
+                System.out.println("Expiry Date: " + med.getExpiryDate());
+            }
+
+            System.out.println("\nList of prescriptions:");
+            for (Prescription prescription : patient.getPrescriptions()) {
+                System.out.println("Medication Name: " + prescription.getName());
+                System.out.println("Issued by: " + prescription.getDoctor());
+                System.out.println("Issued on: " + prescription.getIssueDate());
+                System.out.println("Expires on: " + prescription.getPrescriptionExpiry());
+                System.out.println("Medication Dose: " + prescription.getDose());
+            }
+        } else {
+            System.out.println("Patient not found.");
+        }
+    }
+
+    private static void editPatient(Scanner scanner){
 
     }
 
+    private static void deletePatient(Scanner scanner){
+
+    }
+
+    private static void assignPatientDoc(Scanner scanner){
+
+    }
+
+    // Manage mediation Sub Menu
     private static void manageMedication(Scanner scanner) {
+        System.out.println("\nPlease make a selection:\n");
+        System.out.println("1. Add a medication");
+        System.out.println("2. Search for a medication");
+        System.out.println("3. Edit a medication");
+        System.out.println("4. Delete a medication");
+        System.out.println("5. Restock a medication");
+        System.out.println("6. Back to main menu");
 
+        if (scanner.hasNextInt()) {
+            int option = scanner.nextInt();
+
+            switch (option) {
+                case 1:
+                    System.out.println("Medication name:");
+                    String name = scanner.nextLine();
+
+                    System.out.println("Dosage:");
+                    double dose = scanner.nextDouble();
+
+                    System.out.println("Quantity in stock:");
+                    int quantity = scanner.nextInt();
+
+                    System.out.println("Expiry date:");
+                    LocalDate expiry = null; // Temporary until dates are sorted
+
+                    Medication medication = new Medication(name, dose, quantity, expiry);
+
+                    medications.add(medication);
+
+                    System.out.println("Medication created successfully");
+
+                    break;
+                case 2:
+                    System.out.println("Medication name:");
+                    String search1 = scanner.nextLine();
+                    boolean found1 = false;
+
+                    for (int i = 0; i < medications.size(); i++) {
+                        if (medications.get(i).getName().toLowerCase() == search1.toLowerCase()) {
+                            found1 = true;
+                            System.out.println(medications.get(i));
+                            break;
+                        }
+                    }
+
+                    if (!found1) {
+                        System.out.println("No medication with that name was found.");
+                    }
+
+                    break;
+                case 3:
+                    System.out.println("Medication name:");
+                    String search2 = scanner.nextLine();
+                    boolean found2 = false;
+
+                    for (int i = 0; i < medications.size(); i++) {
+                        if (medications.get(i).getName().toLowerCase() == search2.toLowerCase()) {
+                            found2 = true;
+                            Medication editMed = medications.get(i);
+
+                            System.out.println("New medication name:");
+                            editMed.setName(scanner.nextLine());
+
+                            System.out.println("New dose:");
+                            editMed.setDose(scanner.nextDouble());
+
+                            System.out.println("New expiration date:");
+                            // to be implemented when dates are sorted
+                            
+                            break;
+                        }
+                    }
+
+                    if (!found2) {
+                        System.out.println("No medication with that name was found.");
+                    }
+
+                    break;
+                case 4:
+                    System.out.println("Medication name:");
+                    String search3 = scanner.nextLine();
+                    boolean found3 = false;
+
+                    for (int i = 0; i < medications.size(); i++) {
+                        if (medications.get(i).getName().toLowerCase() == search3.toLowerCase()) {
+                            found3 = true;
+                            
+                            medications.remove(i);
+                            System.out.println("Medication removed successfully.");
+
+                            break;
+                        }
+                    }
+
+                    if (!found3) {
+                        System.out.println("No medication with that name was found.");
+                    }
+                    break;
+                case 5:
+                    System.out.println("Medication name:");
+                    String search4 = scanner.nextLine();
+                    boolean found4 = false;
+
+                    for (int i = 0; i < medications.size(); i++) {
+                        if (medications.get(i).getName().toLowerCase() == search4.toLowerCase()) {
+                            found4 = true;
+                            
+                            System.out.println("Quantity to add to stock:");
+                            int addition = scanner.nextInt();
+                            
+                            medications.get(i).addQuantity(addition);
+                            break;
+                        }
+                    }
+
+                    if (!found4) {
+                        System.out.println("No medication with that name was found.");
+                    }
+
+
+                    break;
+                case 6:
+                    return;
+                default:
+                    System.out.println("Please enter a value between 1-6.");
+            }
+        } else {
+            System.out.println("Invalid input. Must be a numeric value.");
+        }
     }
 
+    // Manage doctor Sub Menu
     private static void manageDoctor(Scanner scanner) {
         boolean exit = false;
         while (!exit) {
@@ -138,7 +496,7 @@ public class MedicationTrackingSystem {
                         deleteDoctor(scanner);
                         break;
                     case 5:
-                        System.out.println("\n***** Thank you for using our system. Have a good day. *****");
+                        System.out.println("\n***** Back to the main menu *****");
                         exit = true;
                         break;
                     default:
@@ -148,15 +506,13 @@ public class MedicationTrackingSystem {
                 System.out.println("Invalid input. Must be a numeric value.");
             }
         }
-
+        System.out.println("\nReturning to the main menu...\n");
     }
+
 
     public static void addDoctor(Scanner scanner) {
         try {
             // getting all details to create new doctor.
-            System.out.println("Enter Doctor ID (number): ");
-            int id = Integer.parseInt(scanner.nextLine());
-
             System.out.println("Enter First Name:");
             String firstName = scanner.nextLine();
 
@@ -165,7 +521,7 @@ public class MedicationTrackingSystem {
 
             System.out.println("Enter Date Of Birth (YYYY-MM-DD): ");
             String dateOfBirth = scanner.nextLine();
-            Date dob = java.sql.Date.valueOf(dateOfBirth); // NOTE: Replace Date with LocalDate if group decides to switch.
+            LocalDate dob = LocalDate.parse(dateOfBirth); // NOTE: Replace Date with LocalDate if group decides to switch.
 
             System.out.println("Enter Phone Number: ");
             String phone = scanner.nextLine();
@@ -176,7 +532,7 @@ public class MedicationTrackingSystem {
             System.out.println("Enter Specialization Of Doctor: ");
             String specialization = scanner.nextLine();
 
-            Doctor newDoctor = new Doctor(id, firstName, lastName, dob, phone, gender, specialization,
+            Doctor newDoctor = new Doctor(firstName, lastName, dob, phone, gender, specialization,
                     new ArrayList<>());
 
             doctors.add(newDoctor);
@@ -195,7 +551,51 @@ public class MedicationTrackingSystem {
     }
 
     public static void searchDoctor(Scanner scanner) {
-        System.out.println("Search doctor not created yet");};
+    
+        // Ask user to enter the Doctor's ID
+        System.out.print("Enter Doctor ID: ");
+        String idInput = scanner.nextLine().trim();
+        int searchId = Integer.parseInt(idInput);
+    
+        // Ask user to enter the Doctor's first name
+        System.out.print("Enter Doctor First Name: ");
+        String searchFirstName = scanner.nextLine().trim().toLowerCase();
+    
+        // Ask user to enter the Doctor's last name
+        System.out.print("Enter Doctor Last Name: ");
+        String searchLastName = scanner.nextLine().trim().toLowerCase();
+    
+        // This variable keeps track if we found a matching doctor
+        boolean doctorFound = false;
+    
+        // Loop through the list of doctors
+        for (Doctor doctor : doctors) {
+            // Check if the ID matches AND first name matches AND last name matches
+            if (doctor.getId() == searchId &&
+                doctor.getFirstName().toLowerCase().equals(searchFirstName) &&
+                doctor.getLastName().toLowerCase().equals(searchLastName)) {
+    
+                // If match found, print out the doctor's details
+                System.out.println("\nDoctor found:");
+                System.out.println("ID: " + doctor.getId());
+                System.out.println("Name: " + doctor.getFirstName() + " " + doctor.getLastName());
+                System.out.println("Date of Birth: " + doctor.getDateOfBirth());
+                System.out.println("Phone: " + doctor.getPhone());
+                System.out.println("Gender: " + doctor.getGender());
+                System.out.println("Specialization: " + doctor.getSpecialization());
+    
+                // Set found flag to true and stop searching
+                doctorFound = true;
+                break;
+            }
+        }
+    
+        // If doctor was not found, show a message
+        if (!doctorFound) {
+            System.out.println("No doctor found with that ID and full name.");
+        }
+    }
+    
 
     public static void editDoctor(Scanner scanner) {
         System.out.println("Edit doctor not created yet");};
@@ -203,13 +603,12 @@ public class MedicationTrackingSystem {
     public static void deleteDoctor(Scanner scanner) {
         System.out.println("Delete doctor not created yet");};
     
-    
-    
-    
+    // Accept a prescription
     private static void accPresc() {
 
     }
 
+    // Generate a report Sub Menu
     private static void generateReport(Scanner scanner) {
 
     }
