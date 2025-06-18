@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class MedicationTrackingSystem {
@@ -17,6 +18,7 @@ public class MedicationTrackingSystem {
     private static ArrayList<Patient> patients = new ArrayList<>();
     private static ArrayList<Doctor> doctors = new ArrayList<>();
     private static ArrayList<Medication> medications = new ArrayList<>();
+
 
     public static void main(String[] args) {
         boolean exit = false;
@@ -331,9 +333,109 @@ public class MedicationTrackingSystem {
 
     // Manage doctor Sub Menu
     private static void manageDoctor(Scanner scanner) {
+        boolean exit = false;
+        while (!exit) {
+
+            System.out.println("\n***** Doctor Management *****");
+            System.out.println("\nPlease make a selection:\n");
+            System.out.println("1. Add Doctor");
+            System.out.println("2. Search Doctor");
+            System.out.println("3. Edit Doctor");
+            System.out.println("4. Delete Doctor");
+            System.out.println("5. Back to main menu");
+            System.out.println("*************************************************************\n");
+
+            //            Doctor Management
+            //            2.1 Add Doctor
+            //            2.2 Search Doctor
+            //            2.3 Edit Doctor
+            //            2.4 Delete Doctor
+
+            // Validation for the Doctor management menu selection
+            if (scanner.hasNextInt()) {
+                int option = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (option) {
+                    case 1:
+                        addDoctor(scanner);
+                        break;
+                    case 2:
+                        searchDoctor(scanner);
+                        break;
+                    case 3:
+                        editDoctor(scanner);
+                        break;
+                    case 4:
+                        deleteDoctor(scanner);
+                        break;
+                    case 5:
+                        System.out.println("\n***** Thank you for using our system. Have a good day. *****");
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println("Please enter a value between 1-5.");
+                }
+            } else {
+                System.out.println("Invalid input. Must be a numeric value.");
+            }
+        }
 
     }
 
+
+    public static void addDoctor(Scanner scanner) {
+        try {
+            // getting all details to create new doctor.
+            System.out.println("Enter Doctor ID (number): ");
+            int id = Integer.parseInt(scanner.nextLine());
+
+            System.out.println("Enter First Name:");
+            String firstName = scanner.nextLine();
+
+            System.out.println("Enter Last Name: ");
+            String lastName = scanner.nextLine();
+
+            System.out.println("Enter Date Of Birth (YYYY-MM-DD): ");
+            String dateOfBirth = scanner.nextLine();
+            Date dob = java.sql.Date.valueOf(dateOfBirth); // NOTE: Replace Date with LocalDate if group decides to switch.
+
+            System.out.println("Enter Phone Number: ");
+            String phone = scanner.nextLine();
+
+            System.out.println("Enter Gender (M/F/O)");
+            char gender = scanner.nextLine().toUpperCase().charAt(0);
+
+            System.out.println("Enter Specialization Of Doctor: ");
+            String specialization = scanner.nextLine();
+
+            Doctor newDoctor = new Doctor(id, firstName, lastName, dob, phone, gender, specialization,
+                    new ArrayList<>());
+
+            doctors.add(newDoctor);
+            System.out.println("Doctor added successfully");
+
+//Test to be deleted to test if doctor was added 
+            System.out.println("Current list of doctors:");
+            for (Doctor doctor : doctors) {
+                System.out.println(", Name: " + doctor.getFirstName() + " " + doctor.getLastName()
+                        +
+                ", Specialization: " + doctor.getSpecialization());
+}
+        } catch (Exception e) {
+            System.out.println("Error adding doctor: " + e.getMessage());
+        }
+    }
+
+    public static void searchDoctor(Scanner scanner) {
+        System.out.println("Search doctor not created yet");};
+
+    public static void editDoctor(Scanner scanner) {
+        System.out.println("Edit doctor not created yet");};
+
+    public static void deleteDoctor(Scanner scanner) {
+        System.out.println("Delete doctor not created yet");};
+    
     // Accept a prescription
     private static void accPresc() {
 
