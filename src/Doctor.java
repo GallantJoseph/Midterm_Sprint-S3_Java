@@ -16,8 +16,8 @@ public class Doctor extends Person {
 
     // Constructors
     // Parameterized
-    public Doctor(int id, String firstName, String lastName, Date dateOfBirth, String phone, char gender, String specialization, ArrayList<Patient> patients) {
-        super(id, firstName, lastName, dateOfBirth, phone, gender);
+    public Doctor(String firstName, String lastName, Date dateOfBirth, String phone, char gender, String specialization, ArrayList<Patient> patients) {
+        super(firstName, lastName, dateOfBirth, phone, gender);
         this.patients = new ArrayList<>(patients);
         this.specialization = specialization;
     }
