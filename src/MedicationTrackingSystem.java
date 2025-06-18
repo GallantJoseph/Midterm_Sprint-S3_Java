@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 public class MedicationTrackingSystem {
@@ -387,9 +386,6 @@ public class MedicationTrackingSystem {
     public static void addDoctor(Scanner scanner) {
         try {
             // getting all details to create new doctor.
-            System.out.println("Enter Doctor ID (number): ");
-            int id = Integer.parseInt(scanner.nextLine());
-
             System.out.println("Enter First Name:");
             String firstName = scanner.nextLine();
 
@@ -398,7 +394,7 @@ public class MedicationTrackingSystem {
 
             System.out.println("Enter Date Of Birth (YYYY-MM-DD): ");
             String dateOfBirth = scanner.nextLine();
-            Date dob = java.sql.Date.valueOf(dateOfBirth); // NOTE: Replace Date with LocalDate if group decides to switch.
+            LocalDate dob = LocalDate.parse(dateOfBirth); // NOTE: Replace Date with LocalDate if group decides to switch.
 
             System.out.println("Enter Phone Number: ");
             String phone = scanner.nextLine();
@@ -409,7 +405,7 @@ public class MedicationTrackingSystem {
             System.out.println("Enter Specialization Of Doctor: ");
             String specialization = scanner.nextLine();
 
-            Doctor newDoctor = new Doctor(id, firstName, lastName, dob, phone, gender, specialization,
+            Doctor newDoctor = new Doctor(firstName, lastName, dob, phone, gender, specialization,
                     new ArrayList<>());
 
             doctors.add(newDoctor);
