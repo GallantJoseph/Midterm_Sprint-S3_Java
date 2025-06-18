@@ -6,7 +6,7 @@
     Dates: June 16, 2025 -
  */
 
- import java.util.Date;
+ import java.time.LocalDate;
 
  public class Medication {
      // Private attributes
@@ -15,11 +15,11 @@
      private String name;
      private double dose;
      private int quantity;
-     private Date expiryDate;
+     private LocalDate expiryDate;
  
      // Constructors
      // Parameterized
-     public Medication (String name, double dose, int quantity, Date expiryDate) {
+     public Medication (String name, double dose, int quantity, LocalDate expiryDate) {
          this.id = idCounter++;
          this.name = name;
          this.dose = dose;
@@ -53,7 +53,7 @@
          return quantity;
      }
  
-     public Date getExpiryDate() {
+     public LocalDate getExpiryDate() {
          return expiryDate;
      }
 
@@ -65,7 +65,7 @@
          this.dose = dose;
      }
  
-     public void setExpiryDate(Date expiryDate) {
+     public void setExpiryDate(LocalDate expiryDate) {
          this.expiryDate = expiryDate;
      }
  }
