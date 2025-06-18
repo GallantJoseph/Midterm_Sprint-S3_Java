@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 public class MedicationTrackingSystem {
@@ -18,7 +17,6 @@ public class MedicationTrackingSystem {
     private static ArrayList<Patient> patients = new ArrayList<>();
     private static ArrayList<Doctor> doctors = new ArrayList<>();
     private static ArrayList<Medication> medications = new ArrayList<>();
-
 
     public static void main(String[] args) {
         boolean exit = false;
@@ -328,7 +326,135 @@ public class MedicationTrackingSystem {
 
     // Manage mediation Sub Menu
     private static void manageMedication(Scanner scanner) {
+        System.out.println("\nPlease make a selection:\n");
+        System.out.println("1. Add a medication");
+        System.out.println("2. Search for a medication");
+        System.out.println("3. Edit a medication");
+        System.out.println("4. Delete a medication");
+        System.out.println("5. Restock a medication");
+        System.out.println("6. Back to main menu");
 
+        if (scanner.hasNextInt()) {
+            int option = scanner.nextInt();
+
+            switch (option) {
+                case 1:
+                    System.out.println("Medication name:");
+                    String name = scanner.nextLine();
+
+                    System.out.println("Dosage:");
+                    double dose = scanner.nextDouble();
+
+                    System.out.println("Quantity in stock:");
+                    int quantity = scanner.nextInt();
+
+                    System.out.println("Expiry date:");
+                    LocalDate expiry = null; // Temporary until dates are sorted
+
+                    Medication medication = new Medication(name, dose, quantity, expiry);
+
+                    medications.add(medication);
+
+                    System.out.println("Medication created successfully");
+
+                    break;
+                case 2:
+                    System.out.println("Medication name:");
+                    String search1 = scanner.nextLine();
+                    boolean found1 = false;
+
+                    for (int i = 0; i < medications.size(); i++) {
+                        if (medications.get(i).getName().toLowerCase() == search1.toLowerCase()) {
+                            found1 = true;
+                            System.out.println(medications.get(i));
+                            break;
+                        }
+                    }
+
+                    if (!found1) {
+                        System.out.println("No medication with that name was found.");
+                    }
+
+                    break;
+                case 3:
+                    System.out.println("Medication name:");
+                    String search2 = scanner.nextLine();
+                    boolean found2 = false;
+
+                    for (int i = 0; i < medications.size(); i++) {
+                        if (medications.get(i).getName().toLowerCase() == search2.toLowerCase()) {
+                            found2 = true;
+                            Medication editMed = medications.get(i);
+
+                            System.out.println("New medication name:");
+                            editMed.setName(scanner.nextLine());
+
+                            System.out.println("New dose:");
+                            editMed.setDose(scanner.nextDouble());
+
+                            System.out.println("New expiration date:");
+                            // to be implemented when dates are sorted
+                            
+                            break;
+                        }
+                    }
+
+                    if (!found2) {
+                        System.out.println("No medication with that name was found.");
+                    }
+
+                    break;
+                case 4:
+                    System.out.println("Medication name:");
+                    String search3 = scanner.nextLine();
+                    boolean found3 = false;
+
+                    for (int i = 0; i < medications.size(); i++) {
+                        if (medications.get(i).getName().toLowerCase() == search3.toLowerCase()) {
+                            found3 = true;
+                            
+                            medications.remove(i);
+                            System.out.println("Medication removed successfully.");
+
+                            break;
+                        }
+                    }
+
+                    if (!found3) {
+                        System.out.println("No medication with that name was found.");
+                    }
+                    break;
+                case 5:
+                    System.out.println("Medication name:");
+                    String search4 = scanner.nextLine();
+                    boolean found4 = false;
+
+                    for (int i = 0; i < medications.size(); i++) {
+                        if (medications.get(i).getName().toLowerCase() == search4.toLowerCase()) {
+                            found4 = true;
+                            
+                            System.out.println("Quantity to add to stock:");
+                            int addition = scanner.nextInt();
+                            
+                            medications.get(i).addQuantity(addition);
+                            break;
+                        }
+                    }
+
+                    if (!found4) {
+                        System.out.println("No medication with that name was found.");
+                    }
+
+
+                    break;
+                case 6:
+                    return;
+                default:
+                    System.out.println("Please enter a value between 1-6.");
+            }
+        } else {
+            System.out.println("Invalid input. Must be a numeric value.");
+        }
     }
 
     // Manage doctor Sub Menu
@@ -387,9 +513,6 @@ public class MedicationTrackingSystem {
     public static void addDoctor(Scanner scanner) {
         try {
             // getting all details to create new doctor.
-            System.out.println("Enter Doctor ID (number): ");
-            int id = Integer.parseInt(scanner.nextLine());
-
             System.out.println("Enter First Name:");
             String firstName = scanner.nextLine();
 
@@ -398,7 +521,7 @@ public class MedicationTrackingSystem {
 
             System.out.println("Enter Date Of Birth (YYYY-MM-DD): ");
             String dateOfBirth = scanner.nextLine();
-            Date dob = java.sql.Date.valueOf(dateOfBirth); // NOTE: Replace Date with LocalDate if group decides to switch.
+            LocalDate dob = LocalDate.parse(dateOfBirth); // NOTE: Replace Date with LocalDate if group decides to switch.
 
             System.out.println("Enter Phone Number: ");
             String phone = scanner.nextLine();
@@ -409,7 +532,7 @@ public class MedicationTrackingSystem {
             System.out.println("Enter Specialization Of Doctor: ");
             String specialization = scanner.nextLine();
 
-            Doctor newDoctor = new Doctor(id, firstName, lastName, dob, phone, gender, specialization,
+            Doctor newDoctor = new Doctor(firstName, lastName, dob, phone, gender, specialization,
                     new ArrayList<>());
 
             doctors.add(newDoctor);
