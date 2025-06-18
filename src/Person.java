@@ -6,20 +6,22 @@
     Dates: June 16, 2025 -
  */
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Period;
 
 public abstract class Person {
     // Private attributes
+    private static int idCounter = 1;
     private int id;
     private String firstName;
     private String lastName;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String phone;
     private char gender; // (M)ale, (F)emale or (O)ther
 
     // Constructors
-    public Person(int id, String firstName, String lastName, Date dateOfBirth, String phone, char gender) {
-        this.id = id;
+    public Person(String firstName, String lastName, LocalDate dateOfBirth, String phone, char gender) {
+        this.id = idCounter++;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -44,8 +46,13 @@ public abstract class Person {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    // Calculate and return the person's age
+    public int getAge() {
+        return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
     }
 
     public String getPhone() {
