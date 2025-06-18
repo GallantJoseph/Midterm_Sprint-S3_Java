@@ -56,6 +56,14 @@
      public Date getExpiryDate() {
          return expiryDate;
      }
+
+     public void setName(String name) {
+         this.name = name;
+     }
+
+     public void setDose(double dose) {
+         this.dose = dose;
+     }
  
      public void setExpiryDate(Date expiryDate) {
          this.expiryDate = expiryDate;
