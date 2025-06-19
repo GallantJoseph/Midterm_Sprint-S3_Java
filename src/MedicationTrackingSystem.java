@@ -521,7 +521,7 @@ public class MedicationTrackingSystem {
 
             System.out.println("Enter Date Of Birth (YYYY-MM-DD): ");
             String dateOfBirth = scanner.nextLine();
-            LocalDate dob = LocalDate.parse(dateOfBirth); // NOTE: Replace Date with LocalDate if group decides to switch.
+            LocalDate dob = LocalDate.parse(dateOfBirth); // TODO Replace Date with LocalDate if group decides to switch.
 
             System.out.println("Enter Phone Number: ");
             String phone = scanner.nextLine();
@@ -538,7 +538,7 @@ public class MedicationTrackingSystem {
             doctors.add(newDoctor);
             System.out.println("Doctor added successfully");
 
-//Test to be deleted to test if doctor was added 
+//TODO Test to be deleted to test if doctor was added 
             System.out.println("Current list of doctors:");
             for (Doctor doctor : doctors) {
                 System.out.println(", Name: " + doctor.getFirstName() + " " + doctor.getLastName()
@@ -552,30 +552,29 @@ public class MedicationTrackingSystem {
 
     public static void searchDoctor(Scanner scanner) {
     
-        // Ask user to enter the Doctor's ID
+        // Ask for ID
         System.out.print("Enter Doctor ID: ");
         String idInput = scanner.nextLine().trim();
         int searchId = Integer.parseInt(idInput);
     
-        // Ask user to enter the Doctor's first name
+        // Ask for first name
         System.out.print("Enter Doctor First Name: ");
         String searchFirstName = scanner.nextLine().trim().toLowerCase();
     
-        // Ask user to enter the Doctor's last name
+        // Ask for last name
         System.out.print("Enter Doctor Last Name: ");
         String searchLastName = scanner.nextLine().trim().toLowerCase();
     
-        // This variable keeps track if we found a matching doctor
         boolean doctorFound = false;
     
-        // Loop through the list of doctors
+
         for (Doctor doctor : doctors) {
-            // Check if the ID matches AND first name matches AND last name matches
+
             if (doctor.getId() == searchId &&
                 doctor.getFirstName().toLowerCase().equals(searchFirstName) &&
                 doctor.getLastName().toLowerCase().equals(searchLastName)) {
     
-                // If match found, print out the doctor's details
+                // If match doctor found print out the doctors details
                 System.out.println("\nDoctor found:");
                 System.out.println("ID: " + doctor.getId());
                 System.out.println("Name: " + doctor.getFirstName() + " " + doctor.getLastName());
@@ -584,25 +583,103 @@ public class MedicationTrackingSystem {
                 System.out.println("Gender: " + doctor.getGender());
                 System.out.println("Specialization: " + doctor.getSpecialization());
     
-                // Set found flag to true and stop searching
+                // Set found to true and stop searching
                 doctorFound = true;
-                break;
+                System.out.print("To return press enter: ");
+                String enter = scanner.nextLine();
+                if (enter == "") {
+                    break;}
+                
+
             }
         }
     
-        // If doctor was not found, show a message
+        // If doctor was not found shows a message
         if (!doctorFound) {
             System.out.println("No doctor found with that ID and full name.");
         }
     }
     
 
-    public static void editDoctor(Scanner scanner) {
-        System.out.println("Edit doctor not created yet");};
 
-    public static void deleteDoctor(Scanner scanner) {
-        System.out.println("Delete doctor not created yet");};
+public static void editDoctor(Scanner scanner) {
+    scanner.nextLine();
     
+
+    System.out.print("Enter Doctor ID to edit: ");
+    int editId = Integer.parseInt(scanner.nextLine());
+
+    System.out.print("Enter Doctor First Name: ");
+    String firstName = scanner.nextLine().trim().toLowerCase();
+
+    System.out.print("Enter Doctor Last Name: ");
+    String lastName = scanner.nextLine().trim().toLowerCase();
+
+
+    for (Doctor d : doctors) {
+
+        if (d.getId() == editId &&
+                d.getFirstName().toLowerCase().equals(firstName) &&
+                d.getLastName().toLowerCase().equals(lastName)) {
+
+            System.out.println("Editing Doctor: " + d.getFirstName() + " " + d.getLastName());
+
+            // Ask for new phone number
+            System.out.print("New Phone (press Enter to keep current): ");
+            String phone = scanner.nextLine();
+            if (!phone.isEmpty()) {
+                d.setPhone(phone); // Only updates if something entered
+            }
+
+            // Ask for new specialization
+            System.out.print("New Specialization (press Enter to keep current): ");
+            String spec = scanner.nextLine();
+            if (!spec.isEmpty()) {
+                d.setSpecialization(spec);
+            }
+
+            // TODO **********************************.  could add gender, lastName, ect
+
+            System.out.println("Doctor updated.");
+            return;
+        }
+    }
+
+    // If not found
+    System.out.println("Doctor not found with that ID and name.");
+}
+
+// removes a doctor from the list using their ID and full name
+public static void deleteDoctor(Scanner scanner) {
+
+    System.out.print("Enter Doctor ID to delete: ");
+    int deleteId = Integer.parseInt(scanner.nextLine());
+
+    System.out.print("Enter Doctor First Name: ");
+    String firstName = scanner.nextLine().trim().toLowerCase();
+
+    System.out.print("Enter Doctor Last Name: ");
+    String lastName = scanner.nextLine().trim().toLowerCase();
+
+    // Loop through the list of doctors to find a match
+    for (Doctor d : doctors) {
+
+        if (d.getId() == deleteId &&
+            d.getFirstName().toLowerCase().equals(firstName) &&
+            d.getLastName().toLowerCase().equals(lastName)) {
+
+            // Remove the matching doctor from the list
+            doctors.remove(d);
+            System.out.println("Doctor deleted successfully.");
+            return; 
+        }
+    }
+
+    // If the loop completes without finding a match
+    System.out.println("Doctor not found with that ID and name.");
+}
+
+
     // Accept a prescription
     private static void accPresc() {
 
