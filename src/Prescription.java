@@ -41,6 +41,11 @@
      }
  
      // Getters and setters
+
+     public int getId() {
+        return id;
+    }
+     
      public Doctor getDoctor() {
          return doctor;
      }
