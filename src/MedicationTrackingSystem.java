@@ -340,6 +340,7 @@ public class MedicationTrackingSystem {
         System.out.println("6. Back to main menu");
 
         if (scanner.hasNextInt()) {
+            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             int option = scanner.nextInt();
 
             switch (option) {
@@ -353,8 +354,10 @@ public class MedicationTrackingSystem {
                     System.out.println("Quantity in stock:");
                     int quantity = scanner.nextInt();
 
-                    System.out.println("Expiry date:");
-                    LocalDate expiry = null; // Temporary until dates are sorted
+                    System.out.println("Expiry date (yyyy-mm-dd):");
+                    String input = scanner.nextLine();
+                    LocalDate expiry = LocalDate.parse(input, dateFormat);
+
 
                     Medication medication = new Medication(name, dose, quantity, expiry);
 
@@ -398,8 +401,11 @@ public class MedicationTrackingSystem {
                             editMed.setDose(scanner.nextDouble());
 
                             System.out.println("New expiration date:");
-                            // to be implemented when dates are sorted
+                            String input2 = scanner.nextLine();
+                            LocalDate date = LocalDate.parse(input2, dateFormat);
+                            editMed.setExpiryDate(date);
                             
+                            System.out.println("Medication updated successfully");
                             break;
                         }
                     }
