@@ -61,6 +61,23 @@ public class MedicationTrackingSystem {
 //            5.3 Generate a Prescriptions Report by Doctor
 //            5.4 Generate a Report of Patients Prescriptions (past year)
 
+            // TODO Remove tests
+            patients.add(new Patient("First", "Last", LocalDate.now(), "1234567890", 'M', new ArrayList<>(), new ArrayList<>()));
+            Patient patient = patients.getFirst();
+
+            Doctor doctor = new Doctor("DocFirst", "DocLast",
+                    LocalDate.of(1975,3,12), "709-987-6543", 'M',
+                    "Java Debugging", new ArrayList<>());
+            doctor.addPatient(patient);
+
+            Medication medication = new Medication("Meds", 100, 1000,LocalDate.now());
+
+            patient.addMedication(medication);
+            patient.addMedication(medication);
+            patient.addMedication(new Medication(medication));
+            patient.addPrescription(new Prescription(doctor, patient, medication, LocalDate.now(),LocalDate.now()));
+            patient.addPrescription(new Prescription(doctor, patient, medication, LocalDate.now(),LocalDate.now()));
+
             // Validation for the menu selection
             if (scanner.hasNextInt()) {
                 int option = scanner.nextInt();
@@ -138,6 +155,8 @@ public class MedicationTrackingSystem {
                 }
             } else {
                 System.out.println("Invalid input. Must be a numeric value.");
+                // Clear the scanner to accept another value.
+                scanner.nextLine();
             }
         }
 
@@ -237,20 +256,24 @@ public class MedicationTrackingSystem {
                 System.out.println("Error while adding the new patient: \n" + e.getMessage());
             }
 
+            // Give the user the option to add another patient.
             System.out.print("\nWould you like to add another one (Y/N)? ");
-            while (true) {
+            boolean isValidOpt = false;
+
+            while (!isValidOpt) {
                 String anotherPatientOpt;
 
                 if (scanner.hasNext()) {
+                    // Convert to uppercase for easier validation
                     anotherPatientOpt = scanner.next().toUpperCase();
 
                     if (!anotherPatientOpt.equals("Y") && !anotherPatientOpt.equals("N")) {
                         System.out.println("Invalid input. Please try again.");
                     } else if (anotherPatientOpt.equals("N")) {
+                        isValidOpt = true;
                         exit = true;
-                        break;
-                    } else {
-                        break;
+                    } else { // Option "Y"
+                        isValidOpt = true;
                     }
                 }
             }
@@ -259,53 +282,98 @@ public class MedicationTrackingSystem {
     }
 
     private static void searchPatient(Scanner scanner) {
-        // TODO Scanner inputs
+        // Variables declaration
+        int id = 0;
+        String firstName = null;
+        String lastName = null;
+
+        String input;
+        boolean isValidInput = false;
+
         Patient patient = null;
 
-        String firstName = "First";
-        String lastName = "Last";
-        System.out.print("First Name: ");
-        System.out.print("Last Name: ");
+        // Header
+        System.out.println("\nSearch for Patient Details:");
 
-        for (Patient curPatient : patients) {
-            if (curPatient.getFirstName().equals(firstName) && curPatient.getLastName().equals(lastName)) {
-                patient = curPatient;
-                break;
+        // ID input
+        System.out.print("Patient ID (leave blank for name search): ");
+
+        // Clear the scanner before
+        scanner.nextLine();
+        while (!isValidInput) {
+            input = scanner.nextLine();
+
+            if (!input.isEmpty()) {
+                try {
+                    id = Integer.parseInt(input);
+                    isValidInput = true;
+                } catch (Exception exception) {
+                    System.out.println("Invalid id. It must be numeric.");
+                }
+            } else { // Blank input
+                isValidInput = true;
             }
         }
 
+        // Search by id
+        if (id != 0) {
+            for (Patient curPatient : patients) {
+                if (curPatient.getId() == id) {
+                    patient = curPatient;
+                    break;
+                }
+            }
+        } else {
+            // Search by first name and last name
+
+            // First name input
+            System.out.print("First Name: ");
+            if (scanner.hasNext()) {
+                firstName = scanner.next();
+            }
+
+            // Last name input
+            System.out.print("Last Name: ");
+            if (scanner.hasNext()) {
+                lastName = scanner.next();
+            }
+
+            // Search for a patient by its full name
+            for (Patient curPatient : patients) {
+                if (curPatient.getFirstName().equals(firstName) && curPatient.getLastName().equals(lastName)) {
+                    patient = curPatient;
+                    break;
+                }
+            }
+        }
+
+        // Show the patient details, including their list of medications and prescriptions
         if (patient != null) {
-            Doctor doctor = new Doctor("DocFirst", "DocLast",
-                    LocalDate.of(1975,3,12), "709-987-6543", 'M',
-                    "Java Debugging", new ArrayList<>());
-            doctor.addPatient(patient);
-
-            Medication medication = new Medication("Meds", 100, 1000,LocalDate.now());
-
-            patient.addMedication(medication);
-            patient.addPrescription(new Prescription(doctor, patient, medication, LocalDate.now(),LocalDate.now()));
-
-            System.out.println("Patient Details:");
+            System.out.println("\nPatient Details:");
+            System.out.println("----------------");
+            System.out.println("ID: " + patient.getId());
             System.out.println("Name: " + patient);
             System.out.println("Age: " + patient.getAge());
             System.out.println("Date of Birth: " + patient.getDateOfBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             System.out.println("Phone Number: " + patient.getPhone());
             System.out.println("Gender: " + patient.getGender());
 
-            System.out.println("\nList of medications:");
+            System.out.println("\nMedications:");
+            System.out.println("--------------------");
             for (Medication med : patient.getMedications()) {
                 System.out.println("Name: " + med.getName());
                 System.out.println("Dose: " + med.getDose());
-                System.out.println("Expiry Date: " + med.getExpiryDate());
+                System.out.println("Expiry Date: " + med.getExpiryDate() + "\n");
             }
 
-            System.out.println("\nList of prescriptions:");
+            System.out.println("\nPrescriptions:");
+            System.out.println("----------------------");
             for (Prescription prescription : patient.getPrescriptions()) {
                 System.out.println("Medication Name: " + prescription.getName());
                 System.out.println("Issued by: " + prescription.getDoctor());
                 System.out.println("Issued on: " + prescription.getIssueDate());
                 System.out.println("Expires on: " + prescription.getPrescriptionExpiry());
-                System.out.println("Medication Dose: " + prescription.getDose());
+                System.out.println("Medication Dose: " + prescription.getDose() + "\n");
             }
         } else {
             System.out.println("Patient not found.");
