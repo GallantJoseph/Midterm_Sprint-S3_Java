@@ -62,7 +62,7 @@ public class MedicationTrackingSystem {
 //            5.4 Generate a Report of Patients Prescriptions (past year)
 
             // TODO Remove tests
-            patients.add(new Patient("First", "Last", LocalDate.now(), "1234567890", 'M', new ArrayList<>(), new ArrayList<>()));
+            patients.add(new Patient("First", "Last", LocalDate.of(1990,1,1), "1234567890", 'M', new ArrayList<>(), new ArrayList<>()));
             Patient patient = patients.getFirst();
 
             Doctor doctor = new Doctor("DocFirst", "DocLast",
@@ -120,7 +120,7 @@ public class MedicationTrackingSystem {
             System.out.println("\n***** Patient Management *****");
             System.out.println("\nPlease make a selection:\n");
             System.out.println("1. Add a Patient");
-            System.out.println("2. Search a Patient");
+            System.out.println("2. Find a Patient");
             System.out.println("3. Edit a Patient");
             System.out.println("4. Delete a Patient");
             System.out.println("5. Assign a Patient to a Doctor");
@@ -135,10 +135,10 @@ public class MedicationTrackingSystem {
                         addPatient(scanner);
                         break;
                     case 2:
-                        searchPatient(scanner);
+                        findPatient(scanner);
                         break;
                     case 3:
-                        //editPatient(scanner);
+                        editPatient(scanner);
                         break;
                     case 4:
                         //deletePatient(scanner);
@@ -281,7 +281,25 @@ public class MedicationTrackingSystem {
         System.out.println("\nReturning to the main menu...\n");
     }
 
-    private static void searchPatient(Scanner scanner) {
+    private static void findPatient(Scanner scanner) {
+        // Header
+        System.out.println("\nSearch for Patient Details:");
+
+        // Allow the user to search for a patient by id or name
+        Patient patient = patientSearch(scanner);
+
+        // Show the patient details, including their list of medications and prescriptions
+        if (patient != null) {
+            showPatientDetails(patient);
+            showPatientMeds(patient);
+            showPatientPrescs(patient);
+        } else {
+            System.out.println("No patient found with the provided ID or name.");
+        }
+    }
+
+    // Allows the user to search for a patient by id or first name and last name
+    private static Patient patientSearch(Scanner scanner) {
         // Variables declaration
         int id = 0;
         String firstName = null;
@@ -292,13 +310,11 @@ public class MedicationTrackingSystem {
 
         Patient patient = null;
 
-        // Header
-        System.out.println("\nSearch for Patient Details:");
-
         // ID input
         System.out.print("Patient ID (leave blank for name search): ");
 
-        // Clear the scanner before
+        // Clear the scanner before to accept a blank value
+        // TODO make sure to only clear when necessary
         scanner.nextLine();
         while (!isValidInput) {
             input = scanner.nextLine();
@@ -306,9 +322,14 @@ public class MedicationTrackingSystem {
             if (!input.isEmpty()) {
                 try {
                     id = Integer.parseInt(input);
-                    isValidInput = true;
+
+                    if (id > 0) {
+                        isValidInput = true;
+                    } else {
+                        System.out.println("Invalid ID. It must be a positive number.");
+                    }
                 } catch (Exception exception) {
-                    System.out.println("Invalid id. It must be numeric.");
+                    System.out.println("Invalid ID. It must be numeric.");
                 }
             } else { // Blank input
                 isValidInput = true;
@@ -347,41 +368,196 @@ public class MedicationTrackingSystem {
             }
         }
 
-        // Show the patient details, including their list of medications and prescriptions
-        if (patient != null) {
-            System.out.println("\nPatient Details:");
-            System.out.println("----------------");
-            System.out.println("ID: " + patient.getId());
-            System.out.println("Name: " + patient);
-            System.out.println("Age: " + patient.getAge());
-            System.out.println("Date of Birth: " + patient.getDateOfBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            System.out.println("Phone Number: " + patient.getPhone());
-            System.out.println("Gender: " + patient.getGender());
+        return patient;
+    }
 
-            System.out.println("\nMedications:");
-            System.out.println("--------------------");
-            for (Medication med : patient.getMedications()) {
-                System.out.println("Name: " + med.getName());
-                System.out.println("Dose: " + med.getDose());
-                System.out.println("Expiry Date: " + med.getExpiryDate() + "\n");
-            }
+    private static void showPatientDetails(Patient patient) {
+        System.out.println("\nPatient Details:");
+        System.out.println("----------------");
+        System.out.println("ID: " + patient.getId());
+        System.out.println("First Name: " + patient.getFirstName());
+        System.out.println("Last Name: " + patient.getLastName());
+        System.out.println("Age: " + patient.getAge());
+        System.out.println("Date of Birth: " + patient.getDateOfBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        System.out.println("Phone Number: " + patient.getPhone());
+        System.out.println("Gender: " + patient.getGender());
+    }
 
-            System.out.println("\nPrescriptions:");
-            System.out.println("----------------------");
-            for (Prescription prescription : patient.getPrescriptions()) {
-                System.out.println("Medication Name: " + prescription.getName());
-                System.out.println("Issued by: " + prescription.getDoctor());
-                System.out.println("Issued on: " + prescription.getIssueDate());
-                System.out.println("Expires on: " + prescription.getPrescriptionExpiry());
-                System.out.println("Medication Dose: " + prescription.getDose() + "\n");
-            }
-        } else {
-            System.out.println("Patient not found.");
+    private static void showPatientMeds(Patient patient) {
+        System.out.println("\nMedications:");
+        System.out.println("--------------------");
+        for (Medication med : patient.getMedications()) {
+            System.out.println("Name: " + med.getName());
+            System.out.println("Dose: " + med.getDose());
+            System.out.println("Expiry Date: " + med.getExpiryDate() + "\n");
+        }
+    }
+
+    private static void showPatientPrescs(Patient patient) {
+        System.out.println("\nPrescriptions:");
+        System.out.println("----------------------");
+        for (Prescription prescription : patient.getPrescriptions()) {
+            System.out.println("Medication Name: " + prescription.getName());
+            System.out.println("Issued by: " + prescription.getDoctor());
+            System.out.println("Issued on: " + prescription.getIssueDate());
+            System.out.println("Expires on: " + prescription.getPrescriptionExpiry());
+            System.out.println("Medication Dose: " + prescription.getDose() + "\n");
         }
     }
 
     private static void editPatient(Scanner scanner){
+        boolean exit = false;
 
+        while (!exit) {
+            // Header
+            System.out.println("\nEdit a Patient's Details:");
+
+            // Search for a patient to edit
+            Patient patient = patientSearch(scanner);
+
+            if (patient != null) {
+                // Show the patient details and allow them to modify each attribute.
+                showPatientDetails(patient);
+
+                // TODO Fix when searching the patient by name, First name entry is skipped. Works when searching by ID
+                editPatientDetails(patient, scanner);
+            } else {
+                System.out.println("No patient found with the provided ID or name.");
+            }
+
+            // Give the user the option to edit another patient.
+            System.out.print("\nWould you like to edit another patient (Y/N)? ");
+            boolean isValidOpt = false;
+
+            while (!isValidOpt) {
+                String anotherPatientOpt;
+
+                if (scanner.hasNext()) {
+                    // Convert to uppercase for easier validation
+                    anotherPatientOpt = scanner.next().toUpperCase();
+
+                    if (!anotherPatientOpt.equals("Y") && !anotherPatientOpt.equals("N")) {
+                        System.out.println("Invalid input. Please try again.");
+                    } else if (anotherPatientOpt.equals("N")) {
+                        isValidOpt = true;
+                        exit = true;
+                    } else { // Option "Y"
+                        isValidOpt = true;
+                    }
+                }
+            }
+        }
+    }
+
+    private static void editPatientDetails(Patient patient, Scanner scanner) {
+        // Variables declaration
+        String firstName = null;
+        String lastName = null;
+        String phone = null;
+
+        String input;
+
+        // First name input
+        System.out.println("\nLeave value blank for no modifications.\n");
+        System.out.print("First Name: ");
+
+        input = scanner.nextLine();
+        if (!input.isEmpty()) {
+            firstName = input;
+        }
+
+        // Last name input
+        System.out.print("Last Name: ");
+
+        input = scanner.nextLine();
+        if (!input.isEmpty()) {
+            lastName = input;
+        }
+
+        // Phone number input
+        System.out.print("Phone Number (10 digits): ");
+
+        // Validate that the phone number is valid
+        while (true) {
+            input = scanner.nextLine();
+
+            // Validate that the format is correct
+            if (!input.isEmpty()) {
+                if (input.matches("\\d{10}")) {
+                    phone = input;
+                    break;
+                } else {
+                    System.out.println("Invalid phone number. Please try again.");
+                }
+            } else {
+                break;
+            }
+        }
+
+        System.out.println("Confirm the patient details update:\n");
+
+        System.out.print("First Name: ");
+        if (firstName == null) {
+            System.out.print(patient.getFirstName() + " (unchanged)");
+        } else {
+            System.out.print(firstName);
+        }
+
+        System.out.print("\nLast Name: ");
+        if (lastName == null) {
+            System.out.print(patient.getLastName() + " (unchanged)");
+        } else {
+            System.out.print(lastName);
+        }
+
+        System.out.print("\nPhone Number: ");
+        if (phone == null) {
+            System.out.print(patient.getPhone() + " (unchanged)");
+        } else {
+            System.out.print(phone);
+        }
+
+        // Give the user the option to add another patient.
+        System.out.print("\nUpdate the patient details these information (Y/N)? ");
+        boolean isValidOpt = false;
+        boolean updatePatient = false;
+
+        while (!isValidOpt) {
+            String updatePatientOpt;
+
+            // Convert to uppercase for easier validation
+            updatePatientOpt = scanner.nextLine().toUpperCase();
+
+            if (!updatePatientOpt.equals("Y") && !updatePatientOpt.equals("N")) {
+                System.out.println("Invalid input. Please try again.");
+            } else if (updatePatientOpt.equals("Y")) {
+                isValidOpt = true;
+                updatePatient = true;
+            } else { // Option "N"
+                isValidOpt = true;
+            }
+        }
+
+        // Update the patient details if they chose "Y"
+        if (updatePatient) {
+            try {
+                if (firstName != null) {
+                    patient.setFirstName(firstName);
+                }
+
+                if (lastName != null) {
+                    patient.setLastName(lastName);
+                }
+
+                if (phone != null) {
+                    patient.setPhone(phone);
+                }
+
+                System.out.println("\nPatient details updated successfully.\n");
+            } catch (Exception e) {
+                System.out.println("Error while updating the patient details. " + e.getMessage());
+            }
+        }
     }
 
     private static void deletePatient(Scanner scanner){
