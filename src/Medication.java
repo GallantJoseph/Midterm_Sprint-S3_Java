@@ -36,36 +36,44 @@
          this.expiryDate = medication.expiryDate;
      }
  
-     public void addQuantity(int value) {
-         this.quantity+=value;
-     }
- 
      // Getters and Setters
      public String getName() {
          return name;
      }
- 
-     public double getDose() {
-         return dose;
-     }
- 
-     public int getQuantity() {
-         return quantity;
-     }
- 
-     public LocalDate getExpiryDate() {
-         return expiryDate;
-     }
 
      public void setName(String name) {
          this.name = name;
+     }
+ 
+     public double getDose() {
+         return dose;
      }
 
      public void setDose(double dose) {
          this.dose = dose;
      }
  
+     public int getQuantity() {
+         return quantity;
+     }
+
+     public void setQuantity(int quantity) {
+         this.quantity = quantity;
+     }
+
+     public void addQuantity(int value) {
+         this.quantity+=value;
+     }
+ 
+     public LocalDate getExpiryDate() {
+         return expiryDate;
+     }
+
      public void setExpiryDate(LocalDate expiryDate) {
          this.expiryDate = expiryDate;
+     }
+
+     public int getId() {
+         return this.id;
      }
  }

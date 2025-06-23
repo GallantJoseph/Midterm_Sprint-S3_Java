@@ -41,11 +41,10 @@
      }
  
      // Getters and setters
+     public int getPrescriptionId() {
+         return this.id;
+     }
 
-     public int getId() {
-        return id;
-    }
-     
      public Doctor getDoctor() {
          return doctor;
      }
