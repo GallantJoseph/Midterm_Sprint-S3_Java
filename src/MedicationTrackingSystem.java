@@ -70,6 +70,8 @@ public class MedicationTrackingSystem {
                     "Java Debugging", new ArrayList<>());
             doctor.addPatient(patient);
 
+            doctors.add(doctor);
+
             Medication medication = new Medication("Meds", 100, 1000,LocalDate.now());
 
             patient.addMedication(medication);
@@ -141,10 +143,10 @@ public class MedicationTrackingSystem {
                         editPatient(scanner);
                         break;
                     case 4:
-                        //deletePatient(scanner);
+                        deletePatient(scanner);
                         break;
                     case 5:
-                        //assignPatientDoc(scanner);
+                        assignPatientDoc(scanner);
                         break;
                     case 6:
                         System.out.println("\n***** Back to the main menu *****");
@@ -560,12 +562,94 @@ public class MedicationTrackingSystem {
         }
     }
 
+    // Search for a patient to delete.
     private static void deletePatient(Scanner scanner){
+        // Header
+        System.out.println("\nSearch for Patient to Delete:");
 
+        // Allow the user to search for a patient by id or name
+        Patient patient = patientSearch(scanner);
+
+        // Show the patient details, and ask for confirmation to delete
+        if (patient != null) {
+            showPatientDetails(patient);
+
+            // Patient deletion confirmation message
+            System.out.print("\nAre you sure you want to delete the patient (Y/N)? ");
+            boolean isValidOpt = false;
+            boolean deletePatient = false;
+
+            while (!isValidOpt) {
+                String deletedPatientOpt;
+
+                // Convert to uppercase for easier validation
+                deletedPatientOpt = scanner.nextLine().toUpperCase();
+
+                if (!deletedPatientOpt.equals("Y") && !deletedPatientOpt.equals("N")) {
+                    System.out.println("Invalid input. Please try again.");
+                } else if (deletedPatientOpt.equals("Y")) {
+                    isValidOpt = true;
+                    deletePatient = true;
+                } else { // Option "N"
+                    isValidOpt = true;
+                }
+            }
+
+            // If the user has confirmed the deletion, otherwise, do nothing and return to the menu.
+            if (deletePatient) {
+                try {
+                    // Remove the patient from the list of patients
+                    patients.remove(patient);
+
+                    System.out.println("\nPatient deleted successfully.\n");
+                } catch (Exception e) {
+                    System.out.println("Error while deleting the patient. " + e.getMessage());
+                }
+            }
+        } else {
+            System.out.println("No patient found with the provided ID or name.");
+        }
+
+        System.out.println("\nReturning to the main menu...\n");
     }
 
+    // Assign a patient to a doctor's list of patients
     private static void assignPatientDoc(Scanner scanner){
+        // Header
+        System.out.println("\nAssign a Patient to a Doctor:");
+        System.out.println("\nDoctor Search:");
 
+        // TODO Remove test values
+        // Doctor for testing
+        Doctor doctor = doctors.getFirst();
+
+        // Search for a doctor function
+        // Show doctor details function
+        // Confirmation message
+
+        System.out.println("\nPatient Search:");
+
+        // Search for a patient to attach to the doctor
+        Patient patient = patientSearch(scanner);
+
+        if (patient != null) {
+            // Show the patient details and allow them to modify each attribute.
+            showPatientDetails(patient);
+
+            // TODO Fix when searching the patient by name, First name entry is skipped. Works when searching by ID
+            // Try to add the patient to the doctor's patients list
+            try {
+                doctor.addPatient(patient);
+
+                // Message for successful addition
+                System.out.println("\n" + patient.getFirstName() + " " + patient.getLastName() +
+                        " added successfully to Dr. " + doctor.getLastName() + "'s patients.");
+            } catch (Exception e) {
+                System.out.println("Error while adding the patient to the doctor's patients list. " + e.getMessage());
+            }
+        } else {
+            System.out.println("No patient found with the provided ID or name.");
+        }
     }
 
     // Manage mediation Sub Menu
