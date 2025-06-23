@@ -39,4 +39,9 @@ public class Doctor extends Person {
     public void addPatient(Patient patient) {
         this.patients.add(patient);
     }
+
+    // Remove a patient from a doctor
+    public void removePatient(Patient patient) {
+        this.patients.remove(patient);
+    }
 }
