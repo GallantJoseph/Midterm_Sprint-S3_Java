@@ -29,9 +29,19 @@ public class Patient extends Person {
         this.medications.add(medication);
     }
 
+    // Remove a medication from the list of medications for the patient
+    public void removeMedication(Medication medication) {
+        this.medications.remove(medication);
+    }
+
     // Add a prescription to the list of prescriptions for the patient
     public void addPrescription(Prescription prescription){
         this.prescriptions.add(prescription);
+    }
+
+    // Remove a prescription from the list of prescriptions for the patient
+    public void removePrescription(Prescription prescription) {
+        this.prescriptions.remove(prescription);
     }
 
     public ArrayList<Medication> getMedications() {
