@@ -837,6 +837,7 @@ public class MedicationTrackingSystem {
                 }
             } else {
                 System.out.println("Invalid input. Must be a numeric value.");
+                scanner.nextLine();
             }
         }
         System.out.println("\nReturning to the main menu...\n");
@@ -925,6 +926,8 @@ public class MedicationTrackingSystem {
 
         } catch (Exception e) {
             System.out.println("Error adding doctor: " + e.getMessage());
+            System.out.print("To return press enter: ");
+            scanner.nextLine();
         }
     }
 
