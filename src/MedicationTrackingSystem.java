@@ -1276,6 +1276,7 @@ public class MedicationTrackingSystem {
     private static void reportsMenu(Scanner scanner) {
         boolean exit = false;
 
+
     while (!exit) {
         System.out.println("\n***** Reports Menu *****");
         System.out.println("\nPlease make a selection:\n");
@@ -1294,7 +1295,7 @@ public class MedicationTrackingSystem {
                         System.out.println("General Report Not created yet");
                         break;
                     case 2:
-                        System.out.println("Report for Expired Medication Not created yet");
+                        expiredMedicationReport(scanner);
                         break;
                     case 3:
                         generateDoctorReport(scanner);
@@ -1362,9 +1363,29 @@ private static void generateDoctorReport(Scanner scanner) {
         if (d.getId() == doctorId) {
             doctor = d;
             break;
-        }
-    }
 
+        }
+
+    private static void expiredMedicationReport(Scanner scanner) {
+        boolean foundExpired = false;
+        LocalDate today = LocalDate.now();
+        for (Medication m : medications) {
+            if (m.getExpiryDate().isBefore(today)) {
+                foundExpired = true;
+                System.out.println("Medication name: " + m.getName());
+                System.out.println("Dose: " + m.getDose());
+                System.out.println("Quantity in stock: " + m.getQuantity());
+                System.out.println("Expiration date: " + m.getExpiryDate());
+            }
+        }
+
+        if (!foundExpired) {
+            System.out.println("No expired medications found.");
+        }
+
+        System.out.println("To return press enter: ");
+        scanner.nextLine();
+      
     if (doctor == null) {
         System.out.println("Doctor not found with ID: " + doctorId);
         return;
@@ -1400,7 +1421,9 @@ private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scan
 
     if (!foundAny) {
         System.out.println("No prescriptions found for this doctor.");
+
     }
+
 }
 
 }
