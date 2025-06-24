@@ -1205,11 +1205,19 @@ private static void reportsMenu(Scanner scanner) {
 
 
     //TODO We can add extra cases based on what reports me want
+    //            Reports
+//            5.1 Generate a General Report
+//            5.2 Generate a Report for Expired Medication
+//            5.3 Generate a Prescriptions Report by Doctor
+//            5.4 Generate a Report of Patients Prescriptions (past year)
     while (!exit) {
         System.out.println("\n***** Reports Menu *****");
         System.out.println("\nPlease make a selection:\n");
-        System.out.println("1. Print all prescriptions for a specific doctor");
-        System.out.println("2. Back to main menu");
+        System.out.println("1. Generate a General Report");
+        System.out.println("2. Generate a Report for Expired Medication");
+        System.out.println("3. Generate a Prescriptions Report by Doctor");
+        System.out.println("4. Generate a Report of Patients Prescriptions (past year)");
+        System.out.println("5. Back to main menu");
         System.out.println("*************************************************************\n");
 
 
@@ -1218,14 +1226,23 @@ private static void reportsMenu(Scanner scanner) {
 
             switch (option) {
                 case 1:
-                generateReport(scanner);
+                System.out.println("General Report Not created yet");
                     break;
                 case 2:
+                System.out.println("Report for Expired Medication Not created yet");
+                    break;
+                case 3:
+                generateDoctorReport(scanner);
+                    break;
+                case 4:
+                System.out.println("Report of Patients Prescriptions (past year) Not created yet");
+                    break;
+                case 5:
                     System.out.println("\n***** Back to the main menu *****");
                     exit = true;
                     break;
                 default:
-                    System.out.println("Please enter a value between 1-2.");
+                    System.out.println("Please enter a value between 1-5.");
             }
         } else {
             System.out.println("Invalid input. Must be a numeric value.");
@@ -1236,60 +1253,64 @@ private static void reportsMenu(Scanner scanner) {
     System.out.println("\nReturning to the main menu...\n");
 }
 
-    private static void generateReport(Scanner scanner) {
-        scanner.nextLine();
- // Ask for Doctor ID
- System.out.print("Enter Doctor ID to generate report: ");
- String input = scanner.nextLine().trim();
- int doctorId;
+private static void generateDoctorReport(Scanner scanner) {
+    scanner.nextLine(); // Clear buffer
 
- try {
-     doctorId = Integer.parseInt(input);
- } catch (NumberFormatException e) {
-     System.out.println("Invalid Doctor ID. Please enter a numeric value.");
-     return;
- }
+    System.out.print("Enter Doctor ID to generate report: ");
+    String input = scanner.nextLine().trim();
+    int doctorId;
 
- // Find the doctor by ID
- Doctor doctor = null;
- for (Doctor d : doctors) {
-     if (d.getId() == doctorId) {
-         doctor = d;
-         break;
-     }
- }
-
- if (doctor == null) {
-     System.out.println("Doctor not found with ID: " + doctorId);
-     return;
- }
-
- // Print report header
- System.out.println("\n--- Prescription Report for Dr. " 
-     + doctor.getFirstName() + " " + doctor.getLastName() + " ---");
-
- boolean foundAny = false;
-
- // Loop through prescriptions to find ones prescribed by this doctor
- for (Prescription p : prescriptions) {
-     if (p.getDoctor().getId() == doctorId) {
-         foundAny = true;
-         System.out.println("Prescription ID: " + p.getId());
-         System.out.println("Patient: " + p.getPatient().getFirstName() + " " + p.getPatient().getLastName());
-         System.out.println("Medication: " + p.getName());
-         System.out.println("Dose: " + p.getDose());
-         System.out.println("Quantity: " + p.getQuantity());
-         System.out.println("Issue Date: " + p.getIssueDate());
-         System.out.println("Prescription Expiry: " + p.getPrescriptionExpiry());
-         System.out.println("-----------------------------------");
-                         // Pause to let user read result
-                         System.out.print("To return press enter: ");
-                         scanner.nextLine();
-     }
- }
-
- if (!foundAny) {
-     System.out.println("No prescriptions found for this doctor.");
- }
+    try {
+        doctorId = Integer.parseInt(input);
+    } catch (NumberFormatException e) {
+        System.out.println("Invalid Doctor ID. Please enter a numeric value.");
+        return;
     }
+
+    Doctor doctor = null;
+    for (Doctor d : doctors) {
+        if (d.getId() == doctorId) {
+            doctor = d;
+            break;
+        }
+    }
+
+    if (doctor == null) {
+        System.out.println("Doctor not found with ID: " + doctorId);
+        return;
+    }
+
+    printPrescriptionReportForDoctor(doctor, scanner);
+}
+
+private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scanner) {
+    System.out.println("\nPrescription Report for Dr. " + doctor.getFirstName() + " " + doctor.getLastName());
+    System.out.println("-------------------------------------------");
+
+    boolean foundAny = false;
+
+    for (Prescription p : prescriptions) {
+        if (p.getDoctor().getId() == doctor.getId()) {
+            foundAny = true;
+
+            System.out.println("Prescription ID: " + p.getId());
+            System.out.println("Patient First Name: " + p.getPatient().getFirstName());
+            System.out.println("Patient Last Name: " + p.getPatient().getLastName());
+            System.out.println("Medication: " + p.getName());
+            System.out.println("Dose: " + p.getDose());
+            System.out.println("Quantity: " + p.getQuantity());
+            System.out.println("Issue Date: " + p.getIssueDate());
+            System.out.println("Prescription Expiry: " + p.getPrescriptionExpiry());
+            System.out.println("-------------------------------------------");
+
+            System.out.print("Press Enter to continue...");
+            scanner.nextLine();
+        }
+    }
+
+    if (!foundAny) {
+        System.out.println("No prescriptions found for this doctor.");
+    }
+}
+
 }
