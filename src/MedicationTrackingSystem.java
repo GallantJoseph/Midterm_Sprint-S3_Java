@@ -1344,27 +1344,34 @@ public class MedicationTrackingSystem {
         System.out.println("\n");
     }
 
-private static void generateDoctorReport(Scanner scanner) {
-    scanner.nextLine(); // Clear buffer
+    private static void generateDoctorReport(Scanner scanner) {
+        scanner.nextLine(); // Clear buffer
 
-    System.out.print("Enter Doctor ID to generate report: ");
-    String input = scanner.nextLine().trim();
-    int doctorId;
+        System.out.print("Enter Doctor ID to generate report: ");
+        String input = scanner.nextLine().trim();
+        int doctorId;
 
-    try {
-        doctorId = Integer.parseInt(input);
-    } catch (NumberFormatException e) {
-        System.out.println("Invalid Doctor ID. Please enter a numeric value.");
-        return;
-    }
-
-    Doctor doctor = null;
-    for (Doctor d : doctors) {
-        if (d.getId() == doctorId) {
-            doctor = d;
-            break;
-
+        try {
+            doctorId = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Doctor ID. Please enter a numeric value.");
+            return;
         }
+
+        Doctor doctor = null;
+        for (Doctor d : doctors) {
+            if (d.getId() == doctorId) {
+                doctor = d;
+                break;
+            }}
+
+        if (doctor == null) {
+            System.out.println("Doctor not found with ID: " + doctorId);
+            return;
+        }
+
+        printPrescriptionReportForDoctor(doctor, scanner);
+    }
 
     private static void expiredMedicationReport(Scanner scanner) {
         boolean foundExpired = false;
@@ -1385,13 +1392,6 @@ private static void generateDoctorReport(Scanner scanner) {
 
         System.out.println("To return press enter: ");
         scanner.nextLine();
-      
-    if (doctor == null) {
-        System.out.println("Doctor not found with ID: " + doctorId);
-        return;
-    }
-
-    printPrescriptionReportForDoctor(doctor, scanner);
 }
 
 private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scanner) {
