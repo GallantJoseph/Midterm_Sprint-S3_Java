@@ -1291,7 +1291,7 @@ public class MedicationTrackingSystem {
 
                 switch (option) {
                     case 1:
-                        generateReport(scanner);
+                        System.out.println("General Report Not created yet");
                         break;
                     case 2:
                         System.out.println("Report for Expired Medication Not created yet");
@@ -1316,82 +1316,6 @@ public class MedicationTrackingSystem {
         }
 
         System.out.println("\nReturning to the main menu...\n");
-    }
-
-    private static void generateReport(Scanner scanner) {
-        scanner.nextLine();
-        // Ask for Doctor ID
-        System.out.print("Enter Doctor ID to generate report: ");
-        String input = scanner.nextLine().trim();
-        int doctorId;
-
-        try {
-            doctorId = Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid Doctor ID. Please enter a numeric value.");
-            return;
-        }
-
-        // Find the doctor by ID
-        Doctor doctor = null;
-        for (Doctor d : doctors) {
-            if (d.getId() == doctorId) {
-                doctor = d;
-                break;
-            switch (option) {
-                case 1:
-                System.out.println("General Report Not created yet");
-                    break;
-                case 2:
-                System.out.println("Report for Expired Medication Not created yet");
-                    break;
-                case 3:
-                generateDoctorReport(scanner);
-                    break;
-                case 4:
-                System.out.println("Report of Patients Prescriptions (past year) Not created yet");
-                    break;
-                case 5:
-                    System.out.println("\n***** Back to the main menu *****");
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("Please enter a value between 1-5.");
-            }
-        }
-
-        if (doctor == null) {
-            System.out.println("Doctor not found with ID: " + doctorId);
-            return;
-        }
-
-        // Print report header
-        System.out.println("\n--- Prescription Report for Dr. "
-                + doctor.getFirstName() + " " + doctor.getLastName() + " ---");
-
-        boolean foundAny = false;
-
-        // Loop through prescriptions to find ones prescribed by this doctor
-        for (Prescription p : prescriptions) {
-            if (p.getDoctor().getId() == doctorId) {
-                foundAny = true;
-                System.out.println("Prescription ID: " + p.getId());
-                System.out.println("Patient: " + p.getPatient().getFirstName() + " " + p.getPatient().getLastName());
-                System.out.println("Medication: " + p.getName());
-                System.out.println("Dose: " + p.getDose());
-                System.out.println("Quantity: " + p.getQuantity());
-                System.out.println("Issue Date: " + p.getIssueDate());
-                System.out.println("Prescription Expiry: " + p.getPrescriptionExpiry());
-                System.out.println("-----------------------------------");
-                // Pause to let user read result
-                System.out.print("To return press enter: ");
-                scanner.nextLine();
-            }
-        }
-
-        if (!foundAny) {
-            System.out.println("No prescriptions found for this doctor.");
-        }
     }
 
     // Generate a report for the prescriptions of the past years for all the patients
