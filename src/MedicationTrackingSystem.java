@@ -1276,6 +1276,7 @@ public class MedicationTrackingSystem {
     private static void reportsMenu(Scanner scanner) {
         boolean exit = false;
 
+
     while (!exit) {
         System.out.println("\n***** Reports Menu *****");
         System.out.println("\nPlease make a selection:\n");
@@ -1294,7 +1295,7 @@ public class MedicationTrackingSystem {
                         System.out.println("General Report Not created yet");
                         break;
                     case 2:
-                        System.out.println("Report for Expired Medication Not created yet");
+                        expiredMedicationReport(scanner);
                         break;
                     case 3:
                         generateDoctorReport(scanner);
@@ -1343,34 +1344,54 @@ public class MedicationTrackingSystem {
         System.out.println("\n");
     }
 
-private static void generateDoctorReport(Scanner scanner) {
-    scanner.nextLine(); // Clear buffer
+    private static void generateDoctorReport(Scanner scanner) {
+        scanner.nextLine(); // Clear buffer
 
-    System.out.print("Enter Doctor ID to generate report: ");
-    String input = scanner.nextLine().trim();
-    int doctorId;
+        System.out.print("Enter Doctor ID to generate report: ");
+        String input = scanner.nextLine().trim();
+        int doctorId;
 
-    try {
-        doctorId = Integer.parseInt(input);
-    } catch (NumberFormatException e) {
-        System.out.println("Invalid Doctor ID. Please enter a numeric value.");
-        return;
-    }
-
-    Doctor doctor = null;
-    for (Doctor d : doctors) {
-        if (d.getId() == doctorId) {
-            doctor = d;
-            break;
+        try {
+            doctorId = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid Doctor ID. Please enter a numeric value.");
+            return;
         }
+
+        Doctor doctor = null;
+        for (Doctor d : doctors) {
+            if (d.getId() == doctorId) {
+                doctor = d;
+                break;
+            }}
+
+        if (doctor == null) {
+            System.out.println("Doctor not found with ID: " + doctorId);
+            return;
+        }
+
+        printPrescriptionReportForDoctor(doctor, scanner);
     }
 
-    if (doctor == null) {
-        System.out.println("Doctor not found with ID: " + doctorId);
-        return;
-    }
+    private static void expiredMedicationReport(Scanner scanner) {
+        boolean foundExpired = false;
+        LocalDate today = LocalDate.now();
+        for (Medication m : medications) {
+            if (m.getExpiryDate().isBefore(today)) {
+                foundExpired = true;
+                System.out.println("Medication name: " + m.getName());
+                System.out.println("Dose: " + m.getDose());
+                System.out.println("Quantity in stock: " + m.getQuantity());
+                System.out.println("Expiration date: " + m.getExpiryDate());
+            }
+        }
 
-    printPrescriptionReportForDoctor(doctor, scanner);
+        if (!foundExpired) {
+            System.out.println("No expired medications found.");
+        }
+
+        System.out.println("To return press enter: ");
+        scanner.nextLine();
 }
 
 private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scanner) {
@@ -1400,7 +1421,9 @@ private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scan
 
     if (!foundAny) {
         System.out.println("No prescriptions found for this doctor.");
+
     }
+
 }
 
 }
