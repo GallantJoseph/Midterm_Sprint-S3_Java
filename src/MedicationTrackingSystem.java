@@ -1151,7 +1151,7 @@ private static void editDoctor(Scanner scanner) {
     
     // Accept a prescription
     private static void accPresc() {
-
+        // TODO
     }
 
     // created some data to preload in until additional data can be created.
@@ -1218,7 +1218,7 @@ private static void editDoctor(Scanner scanner) {
 
                 switch (option) {
                     case 1:
-                        System.out.println("General Report Not created yet");
+                        generateGeneralReport(scanner);
                         break;
                     case 2:
                         expiredMedicationReport(scanner);
@@ -1318,7 +1318,7 @@ private static void editDoctor(Scanner scanner) {
 
         System.out.println("To return press enter: ");
         scanner.nextLine();
-}
+    }
 
 private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scanner) {
     System.out.println("\nPrescription Report for Dr. " + doctor.getFirstName() + " " + doctor.getLastName());
@@ -1351,5 +1351,59 @@ private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scan
     }
 
 }
+
+    private static void generateGeneralReport(Scanner scanner) {
+        System.out.println("Doctors in system:");
+        System.out.println("-------------------------------------");
+
+        for (Doctor d : doctors) {
+            System.out.println("Name: " + d.getFirstName() + " " + d.getLastName());
+            System.out.println("Date of birth: " + d.getDateOfBirth());
+            System.out.println("Phone number: " + d.getPhone());
+            System.out.println("Gender: " + d.getGender());
+            System.out.println("Specialization: " + d.getSpecialization());
+            System.out.println("Patient list: ");
+            for (Patient p : d.getPatients()) {
+                System.out.println("   - " + p.getFirstName() + " " + p.getLastName() + ", " + p.getDateOfBirth());
+            }
+            System.out.println();
+        }
+        System.out.println("-------------------------------------\n");
+
+        System.out.println("Patients in system: ");
+        System.out.println("-------------------------------------");
+
+        for (Patient p : patients) {
+            System.out.println("Name: " + p.getFirstName() + " " + p.getLastName());
+            System.out.println("Date of birth: " + p.getDateOfBirth());
+            System.out.println("Phone number: " + p.getPhone());
+            System.out.println("Gender: " + p.getGender());
+            System.out.println("Medication list: ");
+            for (Medication m : p.getMedications()) {
+                System.out.println("   - " + m.getName() + ", " + m.getDose() + "mg");
+            }
+            System.out.println("Prescription list: ");
+            for (Prescription pr : p.getPrescriptions()) {
+                System.out.println("   - " + pr.getName() + ", " + pr.getDose() + "mg, prescribed by " + pr.getDoctor().getFirstName() + " " + pr.getDoctor().getLastName());
+            }
+            System.out.println();
+        }
+        System.out.println("-------------------------------------");
+
+        System.out.println("Medications in system: ");
+        System.out.println("-------------------------------------");
+
+        for (Medication m : medications) {
+            System.out.println("Name: " + m.getName());
+            System.out.println("Dose: " + m.getDose());
+            System.out.println("Quantity in stock: " + m.getQuantity());
+            System.out.println("Expiry date: " + m.getExpiryDate());
+            System.out.println();
+        }
+        System.out.println("-------------------------------------\n");
+
+        System.out.println("Press enter to return to menu...");
+        scanner.nextLine();
+    }   
 
 }
