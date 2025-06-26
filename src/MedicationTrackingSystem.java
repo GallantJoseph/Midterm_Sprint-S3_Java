@@ -822,20 +822,25 @@ public class MedicationTrackingSystem {
 
     // Manage mediation Sub Menu
     private static void manageMedication(Scanner scanner) {
-        System.out.println("\nPlease make a selection:\n");
+        System.out.println("\n***** Medication Management *****\n");
+        System.out.println("Please make a selection:\n");
         System.out.println("1. Add a medication");
         System.out.println("2. Search for a medication");
         System.out.println("3. Edit a medication");
         System.out.println("4. Delete a medication");
         System.out.println("5. Restock a medication");
         System.out.println("6. Back to main menu");
+        System.out.println("**************************************************************");
 
         if (scanner.hasNextInt()) {
             DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             int option = scanner.nextInt();
 
+            // Scanner buffer
+            scanner.nextLine();
+
             switch (option) {
-                case 1:
+                case 1: // Add a medication
                     System.out.println("Medication name:");
                     String name = scanner.nextLine();
 
@@ -854,10 +859,10 @@ public class MedicationTrackingSystem {
 
                     medications.add(medication);
 
-                    System.out.println("Medication created successfully");
+                    System.out.println("Medication created successfully!\nPress enter to return to main menu...");
 
                     break;
-                case 2:
+                case 2: // Search for a medication
                     System.out.println("Medication name:");
                     String search1 = scanner.nextLine();
                     boolean found1 = false;
@@ -875,7 +880,7 @@ public class MedicationTrackingSystem {
                     }
 
                     break;
-                case 3:
+                case 3: // Edit a medication
                     System.out.println("Medication name:");
                     String search2 = scanner.nextLine();
                     boolean found2 = false;
@@ -906,7 +911,7 @@ public class MedicationTrackingSystem {
                     }
 
                     break;
-                case 4:
+                case 4: // Delete a medication
                     System.out.println("Medication name:");
                     String search3 = scanner.nextLine();
                     boolean found3 = false;
@@ -926,7 +931,7 @@ public class MedicationTrackingSystem {
                         System.out.println("No medication with that name was found.");
                     }
                     break;
-                case 5:
+                case 5: // Restock a medication
                     System.out.println("Medication name:");
                     String search4 = scanner.nextLine();
                     boolean found4 = false;
@@ -939,6 +944,7 @@ public class MedicationTrackingSystem {
                             int addition = scanner.nextInt();
 
                             medications.get(i).addQuantity(addition);
+                            System.out.println("Medication restocked successfully!");
                             break;
                         }
                     }
