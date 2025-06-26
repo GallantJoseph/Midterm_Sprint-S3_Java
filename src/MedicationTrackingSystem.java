@@ -14,10 +14,10 @@ import java.util.Scanner;
 
 public class MedicationTrackingSystem {
     // Private attributes
-    private static ArrayList<Patient> patients = new ArrayList<>();
-    private static ArrayList<Doctor> doctors = new ArrayList<>();
-    private static ArrayList<Medication> medications = new ArrayList<>();
-    private static ArrayList<Prescription> prescriptions = new ArrayList<>();
+    private static final ArrayList<Patient> patients = new ArrayList<>();
+    private static final ArrayList<Doctor> doctors = new ArrayList<>();
+    private static final ArrayList<Medication> medications = new ArrayList<>();
+    private static final ArrayList<Prescription> prescriptions = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -37,7 +37,7 @@ public class MedicationTrackingSystem {
             System.out.println("4. Accept a prescription");
             System.out.println("5. Generate a report");
             System.out.println("6. Exit");
-            System.out.println("**************************************************************\n");
+            System.out.println("**************************************************************");
 
 //            Sub menus template
 //            Patient Management
@@ -134,8 +134,7 @@ public class MedicationTrackingSystem {
             System.out.println("2. Find a Patient");
             System.out.println("3. Edit a Patient");
             System.out.println("4. Delete a Patient");
-            System.out.println("5. Assign a Patient to a Doctor");
-            System.out.println("6. Exit");
+            System.out.println("5. Exit");
             System.out.println("**************************************************************");
 
             if (scanner.hasNextInt()) {
@@ -155,14 +154,11 @@ public class MedicationTrackingSystem {
                         deletePatient(scanner);
                         break;
                     case 5:
-                        assignPatientDoc(scanner);
-                        break;
-                    case 6:
                         System.out.println("\n***** Back to the main menu *****");
                         exit = true;
                         break;
                     default:
-                        System.out.println("Please enter a value between 1-6.");
+                        System.out.println("Please enter a value between 1-5.");
                 }
             } else {
                 System.out.println("Invalid input. Must be a numeric value.");
@@ -384,6 +380,79 @@ public class MedicationTrackingSystem {
         return patient;
     }
 
+    // Allows the user to search for a doctor by id or first name and last name
+    private static Doctor docSearch(Scanner scanner) {
+        // Variables declaration
+        int id = 0;
+        String firstName = null;
+        String lastName = null;
+
+        String input;
+        boolean isValidInput = false;
+
+        Doctor doctor = null;
+
+        // ID input
+        System.out.print("Doctor ID (leave blank for name search): ");
+
+        // Clear the scanner before to accept a blank value
+        // TODO make sure to only clear when necessary
+        scanner.nextLine();
+        while (!isValidInput) {
+            input = scanner.nextLine();
+
+            if (!input.isEmpty()) {
+                try {
+                    id = Integer.parseInt(input);
+
+                    if (id > 0) {
+                        isValidInput = true;
+                    } else {
+                        System.out.println("Invalid ID. It must be a positive number.");
+                    }
+                } catch (Exception exception) {
+                    System.out.println("Invalid ID. It must be numeric.");
+                }
+            } else { // Blank input
+                isValidInput = true;
+            }
+        }
+
+        // Search by id
+        if (id != 0) {
+            for (Doctor curDoctor : doctors) {
+                if (curDoctor.getId() == id) {
+                    doctor = curDoctor;
+                    break;
+                }
+            }
+        } else {
+            // Search by first name and last name
+
+            // First name input
+            System.out.print("First Name: ");
+            if (scanner.hasNext()) {
+                firstName = scanner.next();
+            }
+
+            // Last name input
+            System.out.print("Last Name: ");
+            if (scanner.hasNext()) {
+                lastName = scanner.next();
+            }
+
+            // Search for a patient by its full name
+            for (Doctor curDoctor : doctors) {
+                if (curDoctor.getFirstName().equals(firstName) && curDoctor.getLastName().equals(lastName)) {
+                    doctor = curDoctor;
+                    break;
+                }
+            }
+        }
+
+        return doctor;
+    }
+
     private static void showPatientDetails(Patient patient) {
         System.out.println("\nPatient Details:");
         System.out.println("--------------------");
@@ -394,6 +463,18 @@ public class MedicationTrackingSystem {
         System.out.println("Date of Birth: " + patient.getDateOfBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         System.out.println("Phone Number: " + patient.getPhone());
         System.out.println("Gender: " + patient.getGender());
+    }
+
+    private static void showDoctorDetails(Doctor doctor) {
+        System.out.println("\nDoctor Details:");
+        System.out.println("--------------------");
+        System.out.println("ID: " + doctor.getId());
+        System.out.println("First Name: " + doctor.getFirstName());
+        System.out.println("Last Name: " + doctor.getLastName());
+        System.out.println("Age: " + doctor.getAge());
+        System.out.println("Date of Birth: " + doctor.getDateOfBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        System.out.println("Phone Number: " + doctor.getPhone());
+        System.out.println("Gender: " + doctor.getGender());
     }
 
     private static void showPatientMeds(Patient patient) {
@@ -697,38 +778,46 @@ public class MedicationTrackingSystem {
         // Header
         System.out.println("\nAssign a Patient to a Doctor:");
         System.out.println("\nDoctor Search:");
+        // Search for a doctor to add a patient to their list of patients
 
-        // TODO Remove test values
-        // Doctor for testing
-        Doctor doctor = doctors.getFirst();
+        Doctor doctor = docSearch(scanner);
 
-        // Search for a doctor function
-        // Show doctor details function
-        // Confirmation message
+        if (doctor != null) {
+            // Show doctor details.
+            showDoctorDetails(doctor);
 
-        System.out.println("\nPatient Search:");
+            System.out.println("\nPatient Search:");
 
-        // Search for a patient to attach to the doctor
-        Patient patient = patientSearch(scanner);
+            // Search for a patient to attach to the doctor
+            Patient patient = patientSearch(scanner);
 
-        if (patient != null) {
-            // Show the patient details and allow them to modify each attribute.
-            showPatientDetails(patient);
+            if (patient != null) {
+                // Show the patient details.
+                showPatientDetails(patient);
 
-            // TODO Fix when searching the patient by name, First name entry is skipped. Works when searching by ID
-            // Try to add the patient to the doctor's patients list
-            try {
-                doctor.addPatient(patient);
+                // TODO Fix when searching the patient by name, First name entry is skipped. Works when searching by ID
+                // Try to add the patient to the doctor's patients list
+                try {
+                    doctor.addPatient(patient);
 
-                // Message for successful addition
-                System.out.println("\n" + patient.getFirstName() + " " + patient.getLastName() +
-                        " added successfully to Dr. " + doctor.getLastName() + "'s patients.");
-            } catch (Exception e) {
-                System.out.println("Error while adding the patient to the doctor's patients list. " + e.getMessage());
+                    // Message for successful addition
+                    System.out.println("\n" + patient.getFirstName() + " " + patient.getLastName() +
+                            " added successfully to Dr. " + doctor.getLastName() + "'s list of patients.");
+                } catch (Exception e) {
+                    System.out.println("Error while adding the patient to the doctor's patients list. " + e.getMessage());
+                }
+            } else {
+                System.out.println("No patient found with the provided ID or name.");
             }
         } else {
-            System.out.println("No patient found with the provided ID or name.");
+            System.out.println("No Doctor found with the provided ID or name.");
         }
+
+        System.out.print("Press Enter/Return to return to the main menu.");
+        // Clear the scanner
+        scanner.nextLine();
+
+        // Accept a blank input
     }
 
     // Manage mediation Sub Menu
@@ -881,7 +970,8 @@ public class MedicationTrackingSystem {
             System.out.println("2. Search Doctor");
             System.out.println("3. Edit Doctor");
             System.out.println("4. Delete Doctor");
-            System.out.println("5. Back to main menu");
+            System.out.println("5. Assign a Patient to a Doctor");
+            System.out.println("6. Back to main menu");
             System.out.println("*************************************************************\n");
 
             // Validation for the Doctor management menu selection
@@ -903,11 +993,14 @@ public class MedicationTrackingSystem {
                         deleteDoctor(scanner);
                         break;
                     case 5:
+                        assignPatientDoc(scanner);
+                        break;
+                    case 6:
                         System.out.println("\n***** Back to the main menu *****");
                         exit = true;
                         break;
                     default:
-                        System.out.println("Please enter a value between 1-5.");
+                        System.out.println("Please enter a value between 1-6.");
                 }
             } else {
                 System.out.println("Invalid input. Must be a numeric value.");
@@ -1211,7 +1304,7 @@ private static void editDoctor(Scanner scanner) {
         System.out.println("3. Generate a Prescriptions Report by Doctor");
         System.out.println("4. Generate a Report of Patients Prescriptions (past year)");
         System.out.println("5. Back to main menu");
-        System.out.println("*************************************************************\n");
+        System.out.println("*************************************************************");
 
             if (scanner.hasNextInt()) {
                 int option = scanner.nextInt();
