@@ -1371,32 +1371,77 @@ private static void editDoctor(Scanner scanner) {
 
     private static void generateDoctorReport(Scanner scanner) {
         scanner.nextLine(); // Clear buffer
-
-        System.out.print("Enter Doctor ID to generate report: ");
-        String input = scanner.nextLine().trim();
-        int doctorId;
-
-        try {
-            doctorId = Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid Doctor ID. Please enter a numeric value.");
-            return;
-        }
-
+    
+        int doctorId = 0;
+        String firstName = null;
+        String lastName = null;
         Doctor doctor = null;
-        for (Doctor d : doctors) {
-            if (d.getId() == doctorId) {
-                doctor = d;
-                break;
-            }}
-
-        if (doctor == null) {
-            System.out.println("Doctor not found with ID: " + doctorId);
-            return;
+    
+        System.out.print("Enter Doctor ID (leave blank to search by name): ");
+        String input = scanner.nextLine().trim();
+    
+        if (!input.isEmpty()) {
+            try {
+                doctorId = Integer.parseInt(input);
+                if (doctorId <= 0) {
+                    System.out.println("Doctor ID must be a positive number.");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid Doctor ID. Please enter a numeric value.");
+                return;
+            }
+    
+            for (Doctor d : doctors) {
+                if (d.getId() == doctorId) {
+                    doctor = d;
+                    break;
+                }
+            }
+    
+            if (doctor == null) {
+                System.out.println("Doctor not found with ID: " + doctorId);
+                System.out.print("Press Enter to continue back to Reports Menu...");
+                scanner.nextLine();
+                return;
+            }
+    
+        } else {
+            // Prompt for name search
+            while (true) {
+                System.out.print("Enter Doctor First Name: ");
+                firstName = scanner.nextLine().trim();
+                if (firstName.matches("^[A-Za-z]+$")) break;
+                else System.out.println("Invalid first name. Use letters only.");
+            }
+    
+            while (true) {
+                System.out.print("Enter Doctor Last Name: ");
+                lastName = scanner.nextLine().trim();
+                if (lastName.matches("^[A-Za-z]+$")) break;
+                else System.out.println("Invalid last name. Use letters only.");
+            }
+    
+            for (Doctor d : doctors) {
+                if (d.getFirstName().equalsIgnoreCase(firstName) &&
+                    d.getLastName().equalsIgnoreCase(lastName)) {
+                    doctor = d;
+                    break;
+                }
+            }
+    
+            if (doctor == null) {
+                System.out.println("Doctor not found with name: " + firstName + " " + lastName);
+                System.out.print("Press Enter to continue back to Reports Menu...");
+                scanner.nextLine();
+                return;
+            }
         }
-
+    
+        // If doctor was found by ID or name
         printPrescriptionReportForDoctor(doctor, scanner);
     }
+    
 
     private static void expiredMedicationReport(Scanner scanner) {
         boolean foundExpired = false;
@@ -1446,6 +1491,7 @@ private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scan
 
     if (!foundAny) {
         System.out.println("No prescriptions found for this doctor.");
+        
 
     }
 
@@ -1503,6 +1549,6 @@ private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scan
 
         System.out.println("Press enter to return to menu...");
         scanner.nextLine();
-    }   
+    }
 
 }
