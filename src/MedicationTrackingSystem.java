@@ -18,6 +18,7 @@ public class MedicationTrackingSystem {
     private static final ArrayList<Doctor> doctors = new ArrayList<>();
     private static final ArrayList<Medication> medications = new ArrayList<>();
     private static final ArrayList<Prescription> prescriptions = new ArrayList<>();
+    private static boolean accepted = false;
 
     public static void main(String[] args) {
 
@@ -104,7 +105,7 @@ public class MedicationTrackingSystem {
                         manageDoctor(scanner);
                         break;
                     case 4:
-                        accPresc();
+                        accPresc(scanner);
                         break;
                     case 5:
                         reportsMenu(scanner);
@@ -1249,8 +1250,43 @@ private static void editDoctor(Scanner scanner) {
     }
     
     // Accept a prescription
-    private static void accPresc() {
-        // TODO
+    private static void accPresc(Scanner scanner) {
+        // Scanner buffer
+        scanner.nextLine();
+
+        // Check if function has been run already. If so, tell user and return to menu
+        if (accepted) {
+            System.out.println("You have already accepted the prescription!\nPress enter to return to menu...");
+            scanner.nextLine();
+            return;
+        }
+
+        // Tells function it has been run already
+        accepted = true;
+
+        // Create a new patient and add them to the list
+        Patient patient = new Patient("Charlie", "Brown", LocalDate.of(1950, 10, 30), "7098675309", 'M', new ArrayList<>(), new ArrayList<>());
+        patients.add(patient);
+
+        // Create a new doctor, assign them to the patient, and add them to the list
+        Doctor doctor = new Doctor("Gregory", "House", LocalDate.of(1959, 5, 15), "7095766936", 'M', "Autism", new ArrayList<>());
+        doctor.addPatient(patient);
+        doctors.add(doctor);
+
+        // Create a new medication and add it to the list
+        Medication medication = new Medication("Adderall", 10, 30, LocalDate.of(2025, 11, 4));
+        medications.add(medication);
+
+        // Create a new prescription, assign it to the doctor and the patient, and add it to the list
+        Prescription prescription = new Prescription(doctor, patient, medication, LocalDate.of(2025, 6, 26), LocalDate.of(2025, 7, 10));
+        prescriptions.add(prescription);
+
+        // Assign the new prescription to the patient
+        patient.addPrescription(prescription);
+
+        // Give confirmation that the function succeeded and promt to return to menu
+        System.out.println("Medication accepted successfully!\nPress enter to return to menu...");
+        scanner.nextLine();
     }
 
     // created some data to preload in until additional data can be created.
