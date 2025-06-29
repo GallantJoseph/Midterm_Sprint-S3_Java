@@ -175,58 +175,56 @@ public class MedicationTrackingSystem {
                 lastName = scanner.next();
             }
 
+            scanner.nextLine();
+
             // Date of birth input
             System.out.print("Date of Birth (YYYY-MM-DD): ");
-            if (scanner.hasNext()) {
-                while (true) {
-                    String dateOfBirthStr = scanner.next();
 
-                    // Validate that the format is correct
-                    if (dateOfBirthStr.matches("\\d{4}-\\d{2}-\\d{2}")) {
-                        try {
-                            // Try to parse the date entry into a LocalDate
-                            dateOfBirth = LocalDate.parse(dateOfBirthStr);
-                            break;
-                        } catch (Exception exception) {
-                            System.out.println("Invalid date. Please try again.");
-                        }
-                    } else {
-                        System.out.println("Invalid date format. Please try again.");
+            // Date validation
+            while (true) {
+                String dateOfBirthStr = scanner.nextLine();
+
+                // Validate that the format is correct
+                if (dateOfBirthStr.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                    try {
+                        // Try to parse the date entry into a LocalDate
+                        dateOfBirth = LocalDate.parse(dateOfBirthStr);
+                        break;
+                    } catch (Exception exception) {
+                        System.out.println("Invalid date. Please try again.");
                     }
+                } else {
+                    System.out.println("Invalid date format. Please try again.");
                 }
             }
-
+            
             // Phone number input
             System.out.print("Phone Number (10 digits): ");
-            if (scanner.hasNext()) {
-                while (true) {
-                    phone = scanner.next();
+            while (true) {
+                phone = scanner.nextLine();
 
-                    // Validate that the format is correct
-                    if (phone.matches("\\d{10}")) {
-                        break;
-                    } else {
-                        System.out.println("Invalid phone number. Please try again.");
-                    }
+                // Validate that the format is correct
+                if (phone.matches("\\d{10}")) {
+                    break;
+                } else {
+                    System.out.println("Invalid phone number. Please try again.");
                 }
             }
-
+            
             // Gender input
             System.out.print("Gender (M, F, O): ");
-            if (scanner.hasNext()) {
-                while (true) {
-                    String genderStr = scanner.next();
+            while (true) {
+                String genderStr = scanner.nextLine();
 
-                    // Validate that the format is correct
-                    if (genderStr.matches("[mfoMFO]")) {
-                        gender = genderStr.toUpperCase().charAt(0);
-                        break;
-                    } else {
-                        System.out.println("Invalid gender. Please try again.");
-                    }
+                // Validate that the format is correct
+                if (genderStr.matches("[mfoMFO]")) {
+                    gender = genderStr.toUpperCase().charAt(0);
+                    break;
+                } else {
+                    System.out.println("Invalid gender. Please try again.");
                 }
             }
-
+            
             // Try to create and add the new patient to the list of patients
             try {
                 Patient patient = new Patient(firstName, lastName, dateOfBirth, phone, gender, new ArrayList<>(), new ArrayList<>());
@@ -290,8 +288,6 @@ public class MedicationTrackingSystem {
             scanner.nextLine();
 
         }
-
-
     }
 
     /**
@@ -903,17 +899,64 @@ public class MedicationTrackingSystem {
                         String name = scanner.nextLine();
 
                         System.out.println("Dosage:");
-                        double dose = scanner.nextDouble();
-                        scanner.nextLine();
+                        double dose = 0d;
+
+                        // Dose validation
+                        while (true) {
+                            String doseStr = scanner.nextLine();
+
+                            // Validate that the number is valid.
+                            if (doseStr.matches("\\d+")) {
+                                dose = Double.parseDouble(doseStr);
+
+                                if (dose <= 0) {
+                                    System.out.println("The number must be be positive. Please try again.");
+                                } else {
+                                    break;
+                                }
+                            } else {
+                                System.out.println("Not a number or negative number entered. Please try again.");
+                            }
+                        }
 
                         System.out.println("Quantity in stock:");
-                        int quantity = scanner.nextInt();
-                        scanner.nextLine();
+                        int quantity = 0;
+
+                        // Quantity validation
+                        while (true) {
+                            String quantityStr = scanner.nextLine();
+
+                            // Validate that the number is valid.
+                            if (quantityStr.matches("\\d+")) {
+                                quantity = Integer.parseInt(quantityStr);
+
+                                break;
+                            } else {
+                                System.out.println("Not a number or negative number entered. Please try again.");
+                            }
+                        }
 
                         System.out.println("Expiry date (yyyy-mm-dd):");
-                        String input = scanner.nextLine();
-                        LocalDate expiry = LocalDate.parse(input, dateFormat);
+                        LocalDate expiry = null;
 
+                        // Date validation
+                        while (true) {
+                            String expiryStr = scanner.nextLine();
+
+                            // Validate that the format is correct
+                            if (expiryStr.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                                try {
+                                    // Try to parse the date entry into a LocalDate
+                                    expiry = LocalDate.parse(expiryStr);
+                                    break;
+                                } catch (Exception exception) {
+                                    System.out.println("Invalid date. Please try again.");
+                                }
+                            } else {
+                                System.out.println("Invalid date format. Please try again.");
+                            }
+                        }
+                        
                         Medication medication = new Medication(name, dose, quantity, expiry);
                         medications.add(medication);
 
@@ -958,13 +1001,42 @@ public class MedicationTrackingSystem {
                                 editMed.setName(scanner.nextLine());
 
                                 System.out.println("New dose:");
-                                editMed.setDose(scanner.nextDouble());
-                                scanner.nextLine();
+                                double editDose = 0d;
+
+                                // Dose validation
+                                while (true) {
+                                    String doseStr = scanner.nextLine();
+
+                                    // Validate that the number is valid.
+                                    if (doseStr.matches("\\d+")) {
+                                        editDose = Double.parseDouble(doseStr);
+
+                                        editMed.setDose(editDose);
+                                        break;
+                                    } else {
+                                        System.out.println("Not a number or negative number entered. Please try again.");
+                                    }
+                                }
 
                                 System.out.println("New expiration date:");
-                                String input2 = scanner.nextLine();
-                                LocalDate date = LocalDate.parse(input2, dateFormat);
-                                editMed.setExpiryDate(date);
+
+                                // Date validation
+                                while (true) {
+                                    String expiryStr = scanner.nextLine();
+
+                                    // Validate that the format is correct
+                                    if (expiryStr.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                                        try {
+                                            // Try to parse the date entry into a LocalDate
+                                            editMed.setExpiryDate(LocalDate.parse(expiryStr));
+                                            break;
+                                        } catch (Exception exception) {
+                                            System.out.println("Invalid date. Please try again.");
+                                        }
+                                    } else {
+                                        System.out.println("Invalid date format. Please try again.");
+                                    }
+                                }
 
                                 System.out.println("Medication updated successfully");
                                 System.out.print("Press Enter to continue.");
@@ -1014,8 +1086,21 @@ public class MedicationTrackingSystem {
                                 found4 = true;
 
                                 System.out.println("Quantity to add to stock:");
-                                int addition = scanner.nextInt();
-                                scanner.nextLine();
+                                int addition = 0;
+
+                                // Addition validation
+                                while (true) {
+                                    String additionStr = scanner.nextLine();
+
+                                    // Validate that the number is valid.
+                                    if (additionStr.matches("\\d+")) {
+                                        addition = Integer.parseInt(additionStr);
+
+                                        break;
+                                    } else {
+                                        System.out.println("Not a number or negative number entered. Please try again.");
+                                    }
+                                }
 
                                 medications.get(i).addQuantity(addition);
                                 System.out.println("Medication restocked successfully!");
