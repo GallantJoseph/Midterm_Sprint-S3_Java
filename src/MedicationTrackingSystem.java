@@ -28,7 +28,8 @@ public class MedicationTrackingSystem {
 
         boolean exit = false;
 
-        while (!exit){
+        while (!exit) {
+            clearConsole();
             Scanner scanner = new Scanner(System.in);
 
             System.out.println("\n***** Welcome To The Pharmacy Medication Tracking System *****");
@@ -80,6 +81,7 @@ public class MedicationTrackingSystem {
         boolean exit = false;
 
         while (!exit) {
+            clearConsole();
             System.out.println("\n***** Patient Management *****");
             System.out.println("\nPlease make a selection:\n");
             System.out.println("1. Add a Patient");
@@ -783,6 +785,7 @@ private static void manageMedication(Scanner scanner) {
     int option = 0;
 
     while (option != 6) {
+        clearConsole();
         System.out.println("\n***** Medication Management *****\n");
         System.out.println("Please make a selection:\n");
         System.out.println("1. Add a medication");
@@ -955,7 +958,7 @@ private static void manageMedication(Scanner scanner) {
     private static void manageDoctor(Scanner scanner) {
         boolean exit = false;
         while (!exit) {
-
+            clearConsole();
             System.out.println("\n***** Doctor Management *****");
             System.out.println("\nPlease make a selection:\n");
             System.out.println("1. Add Doctor");
@@ -1327,7 +1330,8 @@ private static void editDoctor(Scanner scanner) {
         boolean exit = false;
 
 
-    while (!exit) {
+        while (!exit) {
+            clearConsole();
         System.out.println("\n***** Reports Menu *****");
         System.out.println("\nPlease make a selection:\n");
         System.out.println("1. Generate a General Report");
@@ -1580,5 +1584,8 @@ private static void editDoctor(Scanner scanner) {
         System.out.println("\nPress enter to return to menu...");
         scanner.nextLine();
     }
-
+    public static void clearConsole() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
 }
