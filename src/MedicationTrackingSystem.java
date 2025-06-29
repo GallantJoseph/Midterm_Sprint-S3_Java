@@ -135,7 +135,7 @@ public class MedicationTrackingSystem {
             }
         }
 
-        System.out.println("\nReturning to the main menu...\n");
+
     }
 
     /**
@@ -257,7 +257,7 @@ public class MedicationTrackingSystem {
                 }
             }
         }
-        System.out.println("\nReturning to the main menu...\n");
+
     }
 
     /**
@@ -812,8 +812,7 @@ public class MedicationTrackingSystem {
             }
         }
 
-        // Return to the main menu
-        System.out.println("\nReturning to the main menu...\n");
+
     }
 
     /**
@@ -1118,8 +1117,7 @@ public class MedicationTrackingSystem {
                         break;
 
                     case 6:
-                        // Back to main menu
-                        System.out.println("Returning to main menu...");
+
                         break;
 
                     default:
@@ -1185,7 +1183,7 @@ public class MedicationTrackingSystem {
                 System.out.println("Invalid input. Must be a numeric value.");
             }
         }
-        System.out.println("\nReturning to the main menu...\n");
+
     }
 
     /**
@@ -1603,7 +1601,6 @@ public class MedicationTrackingSystem {
             }
         }
 
-        System.out.println("\nReturning to the main menu...\n");
     }
 
     /**
