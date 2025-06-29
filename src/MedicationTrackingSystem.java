@@ -12,6 +12,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Main program. Includes the menus and required functions.
+ */
 public class MedicationTrackingSystem {
     // Private attributes
     private static final ArrayList<Patient> patients = new ArrayList<>();
@@ -21,6 +24,14 @@ public class MedicationTrackingSystem {
 
     private static boolean prescAccepted = false;
 
+    /**
+     * The main entry point of the Pharmacy Medication Tracking System.
+     * Initializes the application by preloading data and displaying the main menu.
+     * Allows the user to navigate to patient, medication, doctor management, prescription handling, or report generation.
+     * The application runs until the user chooses to exit.
+     *
+     * @param args Command-line arguments
+     */
     public static void main(String[] args) {
 
         // Loading my preloaded data here
@@ -1346,7 +1357,7 @@ public class MedicationTrackingSystem {
      *
      * @param scanner The Scanner object used to read user input from the console.
      */
-private static void deleteDoctor(Scanner scanner) {
+    private static void deleteDoctor(Scanner scanner) {
         scanner.nextLine();
         Doctor doctor = doctorSearch(scanner);
     
@@ -1370,7 +1381,7 @@ private static void deleteDoctor(Scanner scanner) {
      *
      * @param scanner The Scanner object used to read user input from the console.
      */
-private static void accPresc(Scanner scanner) {
+    private static void accPresc(Scanner scanner) {
         // Scanner buffer
         scanner.nextLine();
 
@@ -1413,7 +1424,7 @@ private static void accPresc(Scanner scanner) {
      * This includes creating sample doctors, patients, medications, and prescriptions,
      * and linking the medications and prescriptions to the appropriate patients.
      */
-private static void preloadData() {
+    private static void preloadData() {
         // Create sample doctors
         Doctor doc1 = new Doctor("Justin", "Greenslade",
                 LocalDate.of(1992, 2, 19), "7091234567", 'M', "karaoke", new ArrayList<>());
@@ -1464,7 +1475,7 @@ private static void preloadData() {
      *
      * @param scanner The Scanner object used to read user input from the console.
      */
-private static void reportsMenu(Scanner scanner) {
+    private static void reportsMenu(Scanner scanner) {
         boolean exit = false;
 
         while (!exit) {
@@ -1518,7 +1529,7 @@ private static void reportsMenu(Scanner scanner) {
      * @param patients The list of patients to generate reports for.
      * @param scanner The Scanner object used to read user input from the console.
      */
-private static void generatePatientsPrescReport(ArrayList<Patient> patients, Scanner scanner) {
+    private static void generatePatientsPrescReport(ArrayList<Patient> patients, Scanner scanner) {
         // Header
         System.out.println("\n\n***** Patients Prescriptions issued in the past year *****");
 
@@ -1546,7 +1557,7 @@ private static void generatePatientsPrescReport(ArrayList<Patient> patients, Sca
      *
      * @param scanner The Scanner object used to read user input from the console.
      */
-private static void generateDoctorReport(Scanner scanner) {
+    private static void generateDoctorReport(Scanner scanner) {
         int doctorId = 0;
         String firstName = null;
         String lastName = null;
@@ -1626,7 +1637,7 @@ private static void generateDoctorReport(Scanner scanner) {
      *
      * @param scanner The Scanner object used to read user input to pause the report display.
      */
-private static void expiredMedicationReport(Scanner scanner) {
+    private static void expiredMedicationReport(Scanner scanner) {
         boolean foundExpired = false;
         LocalDate today = LocalDate.now();
 
@@ -1661,7 +1672,7 @@ private static void expiredMedicationReport(Scanner scanner) {
      * @param doctor The Doctor object for whom the prescription report is generated.
      * @param scanner The Scanner object used to read user input to pause the report display.
      */
-private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scanner) {
+    private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scanner) {
         // Header
         System.out.println("\n******** Expired Medication *********");
         System.out.println("\nPrescription Report for Dr. " + doctor.getFirstName() + " " + doctor.getLastName());
