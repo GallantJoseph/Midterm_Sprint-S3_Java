@@ -1340,8 +1340,13 @@ public class MedicationTrackingSystem {
         scanner.nextLine();
     }
 
-    // removes a doctor from the list using their ID and full name
-    private static void deleteDoctor(Scanner scanner) {
+    /**
+     * Removes a doctor from the system by searching with their ID or full name.
+     * If the doctor is found, they are removed from the list of doctors.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
+private static void deleteDoctor(Scanner scanner) {
         scanner.nextLine();
         Doctor doctor = doctorSearch(scanner);
     
@@ -1358,8 +1363,14 @@ public class MedicationTrackingSystem {
         scanner.nextLine();
     }
     
-    // Accept a prescription
-    private static void accPresc(Scanner scanner) {
+    /**
+     * Accepts a new prescription by creating sample patient, doctor, medication,
+     * and prescription objects, linking them together, and adding them to the system.
+     * Ensures that only one prescription acceptance can occur per runtime.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
+private static void accPresc(Scanner scanner) {
         // Scanner buffer
         scanner.nextLine();
 
@@ -1397,8 +1408,12 @@ public class MedicationTrackingSystem {
         scanner.nextLine();
     }
 
-    // created some data to preload in until additional data can be created.
-    private static void preloadData() {
+    /**
+     * Preloads sample data into the system for testing and demonstration purposes.
+     * This includes creating sample doctors, patients, medications, and prescriptions,
+     * and linking the medications and prescriptions to the appropriate patients.
+     */
+private static void preloadData() {
         // Create sample doctors
         Doctor doc1 = new Doctor("Justin", "Greenslade",
                 LocalDate.of(1992, 2, 19), "7091234567", 'M', "karaoke", new ArrayList<>());
@@ -1441,10 +1456,16 @@ public class MedicationTrackingSystem {
         pat2.addPrescription(presc2);
     }
 
-    // Reports Sub Menu
-    private static void reportsMenu(Scanner scanner) {
+    /**
+     * Displays the Reports menu and handles user input to generate various reports.
+     * Allows the user to generate general reports, expired medication reports,
+     * prescription reports by doctor, and patient prescription reports from the past year.
+     * The menu loops until the user chooses to return to the main menu.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
+private static void reportsMenu(Scanner scanner) {
         boolean exit = false;
-
 
         while (!exit) {
             clearConsole();
@@ -1490,8 +1511,14 @@ public class MedicationTrackingSystem {
         System.out.println("\nReturning to the main menu...\n");
     }
 
-    // Generate a report for the prescriptions of the past years for all the patients
-    private static void generatePatientsPrescReport(ArrayList<Patient> patients, Scanner scanner) {
+    /**
+     * Generates a report of prescriptions issued in the past year for all patients provided.
+     * Displays each patient's recent prescriptions or a message if no patients are found.
+     *
+     * @param patients The list of patients to generate reports for.
+     * @param scanner The Scanner object used to read user input from the console.
+     */
+private static void generatePatientsPrescReport(ArrayList<Patient> patients, Scanner scanner) {
         // Header
         System.out.println("\n\n***** Patients Prescriptions issued in the past year *****");
 
@@ -1512,8 +1539,14 @@ public class MedicationTrackingSystem {
         System.out.println("\n");
     }
 
-    private static void generateDoctorReport(Scanner scanner) {
-    
+    /**
+     * Prompts the user to find a doctor either by ID or by first and last name,
+     * then generates and displays the prescription report for the found doctor.
+     * If no matching doctor is found, displays an appropriate message and returns to the reports menu.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
+private static void generateDoctorReport(Scanner scanner) {
         int doctorId = 0;
         String firstName = null;
         String lastName = null;
@@ -1585,7 +1618,15 @@ public class MedicationTrackingSystem {
     }
     
 
-    private static void expiredMedicationReport(Scanner scanner) {
+    /**
+     * Displays a report of all medications that have expired as of the current date.
+     * For each expired medication, it shows the name, dose, quantity in stock, and expiration date.
+     * If no expired medications are found, an appropriate message is displayed.
+     * The method waits for user input before returning.
+     *
+     * @param scanner The Scanner object used to read user input to pause the report display.
+     */
+private static void expiredMedicationReport(Scanner scanner) {
         boolean foundExpired = false;
         LocalDate today = LocalDate.now();
 
@@ -1610,7 +1651,17 @@ public class MedicationTrackingSystem {
         scanner.nextLine();
     }
 
-    private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scanner) {
+    /**
+     * Prints a report of all prescriptions issued by a specific doctor.
+     * The report includes prescription details such as patient name,
+     * medication, dose, quantity, issue date, and prescription expiry.
+     * If no prescriptions are found for the doctor, an appropriate message is shown.
+     * The method pauses after printing each prescription, waiting for user input to continue.
+     *
+     * @param doctor The Doctor object for whom the prescription report is generated.
+     * @param scanner The Scanner object used to read user input to pause the report display.
+     */
+private static void printPrescriptionReportForDoctor(Doctor doctor, Scanner scanner) {
         // Header
         System.out.println("\n******** Expired Medication *********");
         System.out.println("\nPrescription Report for Dr. " + doctor.getFirstName() + " " + doctor.getLastName());
@@ -1644,6 +1695,15 @@ public class MedicationTrackingSystem {
         }
     }
 
+    /**
+     * Generates and prints a detailed general report of the system.
+     * The report includes information about all doctors, patients, and medications.
+     * It displays doctors with their details and patient lists,
+     * patients with their details, medications, and prescriptions,
+     * and all medications available in the system.
+     *
+     * @param scanner The Scanner object used to wait for user input before returning to the menu.
+     */
     private static void generateGeneralReport(Scanner scanner) {
         //Header
         System.out.println("\n********** General Report ***********");
@@ -1679,7 +1739,8 @@ public class MedicationTrackingSystem {
             }
             System.out.println("Prescription list: ");
             for (Prescription pr : p.getPrescriptions()) {
-                System.out.println("   - " + pr.getName() + ", " + pr.getDose() + "mg, prescribed by " + pr.getDoctor().getFirstName() + " " + pr.getDoctor().getLastName());
+                System.out.println("   - " + pr.getName() + ", " + pr.getDose() + "mg, prescribed by "
+                        + pr.getDoctor().getFirstName() + " " + pr.getDoctor().getLastName());
             }
             System.out.println();
         }
@@ -1700,6 +1761,11 @@ public class MedicationTrackingSystem {
         System.out.println("\nPress enter to return to menu...");
         scanner.nextLine();
     }
+    /**
+     * Clears the console screen by printing special escape characters.
+     * This method simulates clearing the terminal in most UNIX-based systems.
+     * It may not work as expected on some operating systems like Windows.
+     */
     public static void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
