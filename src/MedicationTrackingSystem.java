@@ -76,7 +76,10 @@ public class MedicationTrackingSystem {
     }
 
     // Main program functions
-    // Manage patient Sub Menu
+    /**
+     * Handles the patient management submenu including adding, updating, or removing patients.
+     * @param scanner Scanner for input.
+     */
     private static void managePatient(Scanner scanner) {
         boolean exit = false;
 
@@ -124,6 +127,12 @@ public class MedicationTrackingSystem {
         System.out.println("\nReturning to the main menu...\n");
     }
 
+    /**
+     * Prompts the user to input details for a new patient, validates each entry,
+     * creates a Patient object, and adds it to the system's patient list.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
     private static void addPatient(Scanner scanner) {
         // Variables declaration
         String firstName = null;
@@ -242,6 +251,11 @@ public class MedicationTrackingSystem {
         System.out.println("\nReturning to the main menu...\n");
     }
 
+    /**
+     * Searches for a patient in the system using their ID or name.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
     private static void findPatient(Scanner scanner) {
         // Header
         System.out.println("\nSearch for Patient Details:");
@@ -269,7 +283,12 @@ public class MedicationTrackingSystem {
 
     }
 
-    // Allows the user to search for a patient by id or first name and last name
+    /**
+     * Searches for a patient in the system either by patient ID or by first and last name.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     * @return The Patient object if a match is found; null otherwise.
+     */
     private static Patient patientSearch(Scanner scanner) {
         // Variables declaration
         int id = 0;
@@ -341,7 +360,12 @@ public class MedicationTrackingSystem {
         return patient;
     }
 
-    // Allows the user to search for a doctor by id or first name and last name
+    /**
+     * Searches for a doctor in the system either by doctor ID or by first and last name.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     * @return The Doctor object if a match is found; null otherwise.
+     */
     private static Doctor docSearch(Scanner scanner) {
         // Variables declaration
         int id = 0;
@@ -413,6 +437,12 @@ public class MedicationTrackingSystem {
         return doctor;
     }
 
+    /**
+     * Displays detailed information about a patient, including ID, name, age,
+     * date of birth, phone number, and gender.
+     *
+     * @param patient The Patient object whose details are to be displayed.
+     */
     private static void showPatientDetails(Patient patient) {
         System.out.println("\nPatient Details:");
         System.out.println("--------------------");
@@ -425,6 +455,12 @@ public class MedicationTrackingSystem {
         System.out.println("Gender: " + patient.getGender());
     }
 
+    /**
+     * Displays detailed information about a doctor, including ID, name, age,
+     * date of birth, phone number, and gender.
+     *
+     * @param doctor The Doctor object whose details are to be displayed.
+     */
     private static void showDoctorDetails(Doctor doctor) {
         System.out.println("\nDoctor Details:");
         System.out.println("--------------------");
@@ -437,6 +473,12 @@ public class MedicationTrackingSystem {
         System.out.println("Gender: " + doctor.getGender());
     }
 
+    /**
+     * Displays a list of medications prescribed to the specified patient,
+     * including the name, dose, and expiry date of each medication.
+     *
+     * @param patient The Patient object whose medications are to be displayed.
+     */
     private static void showPatientMeds(Patient patient) {
         System.out.println("\nMedications:");
         System.out.println("--------------------");
@@ -447,7 +489,14 @@ public class MedicationTrackingSystem {
         }
     }
 
-    // Show the patient's prescriptions. Flag to show or hide expired medication.
+    /**
+     * Displays a list of prescriptions for the specified patient based on the provided filters.
+     * Only prescriptions that meet the specified conditions for age and expiration are shown.
+     *
+     * @param patient        The Patient object whose prescriptions are to be displayed.
+     * @param showOldPrescs  If true, includes prescriptions older than one year.
+     * @param showExpired    If true, includes prescriptions that have expired.
+     */
     private static void showPatientPrescs(Patient patient, boolean showOldPrescs, boolean showExpired) {
         // Old prescription threshold value in years.
         final int YEARS_THRES = 1;
@@ -475,7 +524,11 @@ public class MedicationTrackingSystem {
         }
     }
 
-    // Show the patient's prescriptions for the past year
+    /**
+     * Displays the names of the patient's current prescriptions issued within the last year.
+     *
+     * @param patient The Patient object whose current prescriptions are to be displayed.
+     */
     private static void showPatientCurrentPrescs(Patient patient) {
         // Old prescription threshold value in years.
         final int YEARS_THRES = 1;
@@ -500,6 +553,13 @@ public class MedicationTrackingSystem {
         }
     }
 
+    /**
+     * Allows the user to search for a patient by ID or name and edit their details.
+     * After displaying the patient's current information, the user can update each attribute.
+     * The process can be repeated for multiple patients until the user chooses to exit.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
     private static void editPatient(Scanner scanner){
         boolean exit = false;
 
@@ -545,6 +605,14 @@ public class MedicationTrackingSystem {
         }
     }
 
+    /**
+     * Allows the user to modify a patient's first name, last name, and phone number.
+     * Prompts the user for new values, validates phone number input, and confirms
+     * changes before applying them. Fields can be left blank to remain unchanged.
+     *
+     * @param patient The Patient object whose details are to be edited.
+     * @param scanner The Scanner object used to read user input from the console.
+     */
     private static void editPatientDetails(Patient patient, Scanner scanner) {
         // Variables declaration
         String firstName = null;
@@ -656,7 +724,13 @@ public class MedicationTrackingSystem {
         }
     }
 
-    // Search for a patient to delete.
+    /**
+     * Allows the user to search for a patient by ID or name and delete them from the system.
+     * Displays patient details for confirmation before deletion. The user can delete
+     * multiple patients in one session or return to the main menu.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
     private static void deletePatient(Scanner scanner){
         boolean exit = false;
 
@@ -735,7 +809,13 @@ public class MedicationTrackingSystem {
         System.out.println("\nReturning to the main menu...\n");
     }
 
-    // Assign a patient to a doctor's list of patients
+    /**
+     * Allows the user to assign a patient to a doctor's list of patients.
+     * The user searches for both the doctor and the patient by ID or name.
+     * If both are found, the patient is added to the doctor's list and a confirmation message is displayed.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
     private static void assignPatientDoc(Scanner scanner){
         // Header
         System.out.println("\nAssign a Patient to a Doctor:");
@@ -779,182 +859,193 @@ public class MedicationTrackingSystem {
         scanner.nextLine();
     }
 
-// Manage mediation Sub Menu
-private static void manageMedication(Scanner scanner) {
-    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    int option = 0;
+    /**
+     * Displays the medication management menu and handles operations such as
+     * adding, searching, editing, deleting, and restocking medications.
+     * The user can select an option from the menu and interact with the medication list accordingly.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
+    private static void manageMedication(Scanner scanner) {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        int option = 0;
 
-    while (option != 6) {
-        clearConsole();
-        System.out.println("\n***** Medication Management *****\n");
-        System.out.println("Please make a selection:\n");
-        System.out.println("1. Add a medication");
-        System.out.println("2. Search for a medication");
-        System.out.println("3. Edit a medication");
-        System.out.println("4. Delete a medication");
-        System.out.println("5. Restock a medication");
-        System.out.println("6. Back to main menu");
-        System.out.println("**************************************************************");
+        while (option != 6) {
+            clearConsole();
+            System.out.println("\n***** Medication Management *****\n");
+            System.out.println("Please make a selection:\n");
+            System.out.println("1. Add a medication");
+            System.out.println("2. Search for a medication");
+            System.out.println("3. Edit a medication");
+            System.out.println("4. Delete a medication");
+            System.out.println("5. Restock a medication");
+            System.out.println("6. Back to main menu");
+            System.out.println("**************************************************************");
 
-        if (scanner.hasNextInt()) {
-            option = scanner.nextInt();
-            scanner.nextLine(); // Scanner buffer
+            if (scanner.hasNextInt()) {
+                option = scanner.nextInt();
+                scanner.nextLine(); // Scanner buffer
 
-            switch (option) {
-                case 1: // Add a medication
-                    System.out.println("\nMedication name:");
-                    String name = scanner.nextLine();
+                switch (option) {
+                    case 1: // Add a medication
+                        System.out.println("\nMedication name:");
+                        String name = scanner.nextLine();
 
-                    System.out.println("Dosage:");
-                    double dose = scanner.nextDouble();
-                    scanner.nextLine();
-
-                    System.out.println("Quantity in stock:");
-                    int quantity = scanner.nextInt();
-                    scanner.nextLine();
-
-                    System.out.println("Expiry date (yyyy-mm-dd):");
-                    String input = scanner.nextLine();
-                    LocalDate expiry = LocalDate.parse(input, dateFormat);
-
-                    Medication medication = new Medication(name, dose, quantity, expiry);
-                    medications.add(medication);
-
-                    System.out.println("\nMedication created successfully!\nPress enter to return to menu...");
-                    scanner.nextLine();
-                    break;
-
-                case 2: // Search for a medication
-                    System.out.println("\nMedication name:");
-                    String search1 = scanner.nextLine();
-                    boolean found1 = false;
-
-                    for (int i = 0; i < medications.size(); i++) {
-                        if (medications.get(i).getName().equalsIgnoreCase(search1)) {
-                            found1 = true;
-                            System.out.println(medications.get(i));
-                            System.out.print("\nPress Enter to continue.");
-                            scanner.nextLine();
-                            break;
-                        }
-                    }
-
-                    if (!found1) {
-                        System.out.println("\nNo medication with that name was found.");
-                        System.out.print("Press Enter to continue.");
+                        System.out.println("Dosage:");
+                        double dose = scanner.nextDouble();
                         scanner.nextLine();
-                    }
 
-                    break;
+                        System.out.println("Quantity in stock:");
+                        int quantity = scanner.nextInt();
+                        scanner.nextLine();
 
-                case 3: // Edit a medication
-                    System.out.println("\nMedication name:");
-                    String search2 = scanner.nextLine();
-                    boolean found2 = false;
+                        System.out.println("Expiry date (yyyy-mm-dd):");
+                        String input = scanner.nextLine();
+                        LocalDate expiry = LocalDate.parse(input, dateFormat);
 
-                    for (int i = 0; i < medications.size(); i++) {
-                        if (medications.get(i).getName().equalsIgnoreCase(search2)) {
-                            found2 = true;
-                            Medication editMed = medications.get(i);
+                        Medication medication = new Medication(name, dose, quantity, expiry);
+                        medications.add(medication);
 
-                            System.out.println("New medication name:");
-                            editMed.setName(scanner.nextLine());
+                        System.out.println("\nMedication created successfully!\nPress enter to return to menu...");
+                        scanner.nextLine();
+                        break;
 
-                            System.out.println("New dose:");
-                            editMed.setDose(scanner.nextDouble());
-                            scanner.nextLine();
+                    case 2: // Search for a medication
+                        System.out.println("\nMedication name:");
+                        String search1 = scanner.nextLine();
+                        boolean found1 = false;
 
-                            System.out.println("New expiration date:");
-                            String input2 = scanner.nextLine();
-                            LocalDate date = LocalDate.parse(input2, dateFormat);
-                            editMed.setExpiryDate(date);
+                        for (int i = 0; i < medications.size(); i++) {
+                            if (medications.get(i).getName().equalsIgnoreCase(search1)) {
+                                found1 = true;
+                                System.out.println(medications.get(i));
+                                System.out.print("\nPress Enter to continue.");
+                                scanner.nextLine();
+                                break;
+                            }
+                        }
 
-                            System.out.println("Medication updated successfully");
+                        if (!found1) {
+                            System.out.println("\nNo medication with that name was found.");
                             System.out.print("Press Enter to continue.");
                             scanner.nextLine();
-                            break;
                         }
-                    }
 
-                    if (!found2) {
-                        System.out.println("No medication with that name was found.");
-                        System.out.print("Press Enter to continue.");
-                        scanner.nextLine();
-                    }
+                        break;
 
-                    break;
+                    case 3: // Edit a medication
+                        System.out.println("\nMedication name:");
+                        String search2 = scanner.nextLine();
+                        boolean found2 = false;
 
-                case 4: // Delete a medication
-                    System.out.println("\nMedication name:");
-                    String search3 = scanner.nextLine();
-                    boolean found3 = false;
+                        for (int i = 0; i < medications.size(); i++) {
+                            if (medications.get(i).getName().equalsIgnoreCase(search2)) {
+                                found2 = true;
+                                Medication editMed = medications.get(i);
 
-                    for (int i = 0; i < medications.size(); i++) {
-                        if (medications.get(i).getName().equalsIgnoreCase(search3)) {
-                            found3 = true;
-                            medications.remove(i);
-                            System.out.println("Medication removed successfully.");
+                                System.out.println("New medication name:");
+                                editMed.setName(scanner.nextLine());
+
+                                System.out.println("New dose:");
+                                editMed.setDose(scanner.nextDouble());
+                                scanner.nextLine();
+
+                                System.out.println("New expiration date:");
+                                String input2 = scanner.nextLine();
+                                LocalDate date = LocalDate.parse(input2, dateFormat);
+                                editMed.setExpiryDate(date);
+
+                                System.out.println("Medication updated successfully");
+                                System.out.print("Press Enter to continue.");
+                                scanner.nextLine();
+                                break;
+                            }
+                        }
+
+                        if (!found2) {
+                            System.out.println("No medication with that name was found.");
                             System.out.print("Press Enter to continue.");
                             scanner.nextLine();
-                            break;
                         }
-                    }
 
-                    if (!found3) {
-                        System.out.println("No medication with that name was found.");
-                        System.out.print("Press Enter to continue.");
-                        scanner.nextLine();
-                    }
-                    break;
+                        break;
 
-                case 5: // Restock a medication
-                    System.out.println("\nMedication name:");
-                    String search4 = scanner.nextLine();
-                    boolean found4 = false;
+                    case 4: // Delete a medication
+                        System.out.println("\nMedication name:");
+                        String search3 = scanner.nextLine();
+                        boolean found3 = false;
 
-                    for (int i = 0; i < medications.size(); i++) {
-                        if (medications.get(i).getName().equalsIgnoreCase(search4)) {
-                            found4 = true;
+                        for (int i = 0; i < medications.size(); i++) {
+                            if (medications.get(i).getName().equalsIgnoreCase(search3)) {
+                                found3 = true;
+                                medications.remove(i);
+                                System.out.println("Medication removed successfully.");
+                                System.out.print("Press Enter to continue.");
+                                scanner.nextLine();
+                                break;
+                            }
+                        }
 
-                            System.out.println("Quantity to add to stock:");
-                            int addition = scanner.nextInt();
-                            scanner.nextLine();
-
-                            medications.get(i).addQuantity(addition);
-                            System.out.println("Medication restocked successfully!");
+                        if (!found3) {
+                            System.out.println("No medication with that name was found.");
                             System.out.print("Press Enter to continue.");
                             scanner.nextLine();
-                            break;
                         }
-                    }
+                        break;
 
-                    if (!found4) {
-                        System.out.println("\nNo medication with that name was found.");
-                        System.out.print("Press Enter to continue.");
-                        scanner.nextLine();
-                    }
+                    case 5: // Restock a medication
+                        System.out.println("\nMedication name:");
+                        String search4 = scanner.nextLine();
+                        boolean found4 = false;
 
-                    break;
+                        for (int i = 0; i < medications.size(); i++) {
+                            if (medications.get(i).getName().equalsIgnoreCase(search4)) {
+                                found4 = true;
 
-                case 6:
-                    // Back to main menu
-                    System.out.println("Returning to main menu...");
-                    break;
+                                System.out.println("Quantity to add to stock:");
+                                int addition = scanner.nextInt();
+                                scanner.nextLine();
 
-                default:
-                    System.out.println("Please enter a value between 1-6.");
+                                medications.get(i).addQuantity(addition);
+                                System.out.println("Medication restocked successfully!");
+                                System.out.print("Press Enter to continue.");
+                                scanner.nextLine();
+                                break;
+                            }
+                        }
+
+                        if (!found4) {
+                            System.out.println("\nNo medication with that name was found.");
+                            System.out.print("Press Enter to continue.");
+                            scanner.nextLine();
+                        }
+
+                        break;
+
+                    case 6:
+                        // Back to main menu
+                        System.out.println("Returning to main menu...");
+                        break;
+
+                    default:
+                        System.out.println("Please enter a value between 1-6.");
+                }
+            } else {
+                System.out.println("Invalid input. Must be a numeric value.");
+                scanner.nextLine(); // clear invalid input
             }
-        } else {
-            System.out.println("Invalid input. Must be a numeric value.");
-            scanner.nextLine(); // clear invalid input
+
+            System.out.println(); // spacing
         }
-
-        System.out.println(); // spacing
     }
-}
 
-
-    // Manage doctor Sub Menu
+    /**
+     * Displays the doctor management menu and handles operations such as
+     * adding, searching, editing, deleting doctors, and assigning a patient to a doctor.
+     * Continues to prompt the user until they choose to return to the main menu.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
     private static void manageDoctor(Scanner scanner) {
         boolean exit = false;
         while (!exit) {
@@ -1002,7 +1093,13 @@ private static void manageMedication(Scanner scanner) {
         System.out.println("\nReturning to the main menu...\n");
     }
 
-
+    /**
+     * Prompts the user to enter details for a new doctor, validates the input fields,
+     * and adds the doctor to the system. The details include first name, last name,
+     * date of birth, phone number, gender, and specialization.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
     private static void addDoctor(Scanner scanner) {
         //
         try {
@@ -1091,6 +1188,12 @@ private static void manageMedication(Scanner scanner) {
         }
     }
 
+    /**
+     * Searches for a doctor by ID or name and displays the result.
+     * If no matching doctor is found, a message is shown to the user.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
     private static void searchDoctor(Scanner scanner) {
         scanner.nextLine();
         Doctor doctor = doctorSearch(scanner);
@@ -1105,124 +1208,137 @@ private static void manageMedication(Scanner scanner) {
         scanner.nextLine();
     }
     
-// Allows the user to search for a doctor by ID or by first and last name
-private static Doctor doctorSearch(Scanner scanner) {
-    int id = 0;
-    String firstName = null;
-    String lastName = null;
+    /**
+     * Searches for a doctor in the system either by doctor ID or by first and last name.
+     * If a matching doctor is found, their details are displayed in the console.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     * @return The Doctor object if a match is found; null otherwise.
+     */
+    private static Doctor doctorSearch(Scanner scanner) {
+        int id = 0;
+        String firstName = null;
+        String lastName = null;
 
-    String input;
-    boolean isValidInput = false;
-    Doctor doctor = null;
+        String input;
+        boolean isValidInput = false;
+        Doctor doctor = null;
 
-    // Prompt for ID (optional)
-    System.out.print("Doctor ID (leave blank to search by name): ");
+        // Prompt for ID (optional)
+        System.out.print("Doctor ID (leave blank to search by name): ");
 
-    while (!isValidInput) {
-        input = scanner.nextLine().trim();
+        while (!isValidInput) {
+            input = scanner.nextLine().trim();
 
-        if (!input.isEmpty()) {
-            try {
-                id = Integer.parseInt(input);
-                if (id > 0) {
-                    isValidInput = true;
-                } else {
-                    System.out.println("ID must be a positive number.");
+            if (!input.isEmpty()) {
+                try {
+                    id = Integer.parseInt(input);
+                    if (id > 0) {
+                        isValidInput = true;
+                    } else {
+                        System.out.println("ID must be a positive number.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid ID. Please enter numeric digits.");
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid ID. Please enter numeric digits.");
+            } else {
+                // Leave blank for name search
+                isValidInput = true;
+            }
+        }
+
+        // Search by ID
+        if (id != 0) {
+            for (Doctor d : doctors) {
+                if (d.getId() == id) {
+                    doctor = d;
+                    break;
+                }
             }
         } else {
-            // Leave blank for name search
-            isValidInput = true;
-        }
-    }
+            // Prompt for first name
+            while (true) {
+                System.out.print("Enter Doctor First Name: ");
+                firstName = scanner.nextLine().trim();
+                if (firstName.matches("^[A-Za-z]+$")) break;
+                else System.out.println("Invalid first name. Use letters only.");
+            }
 
-    // Search by ID
-    if (id != 0) {
-        for (Doctor d : doctors) {
-            if (d.getId() == id) {
-                doctor = d;
-                break;
+            // Prompt for last name
+            while (true) {
+                System.out.print("Enter Doctor Last Name: ");
+                lastName = scanner.nextLine().trim();
+                if (lastName.matches("^[A-Za-z]+$")) break;
+                else System.out.println("Invalid last name. Use letters only.");
+            }
+
+            for (Doctor d : doctors) {
+                if (d.getFirstName().equalsIgnoreCase(firstName)
+                        && d.getLastName().equalsIgnoreCase(lastName)) {
+                    doctor = d;
+                    break;
+                }
             }
         }
-    } else {
-        // Prompt for first name
-        while (true) {
-            System.out.print("Enter Doctor First Name: ");
-            firstName = scanner.nextLine().trim();
-            if (firstName.matches("^[A-Za-z]+$")) break;
-            else System.out.println("Invalid first name. Use letters only.");
+
+        // Display result
+        if (doctor != null) {
+            System.out.println("\nDoctor found:");
+            System.out.println("ID: " + doctor.getId());
+            System.out.println("Name: " + doctor.getFirstName() + " " + doctor.getLastName());
+            System.out.println("Date of Birth: " + doctor.getDateOfBirth());
+            System.out.println("Phone: " + doctor.getPhone());
+            System.out.println("Gender: " + doctor.getGender());
+            System.out.println("Specialization: " + doctor.getSpecialization());
+        } else {
+            System.out.println("No matching doctor found.");
         }
 
-        // Prompt for last name
-        while (true) {
-            System.out.print("Enter Doctor Last Name: ");
-            lastName = scanner.nextLine().trim();
-            if (lastName.matches("^[A-Za-z]+$")) break;
-            else System.out.println("Invalid last name. Use letters only.");
-        }
-
-        for (Doctor d : doctors) {
-            if (d.getFirstName().equalsIgnoreCase(firstName)
-                    && d.getLastName().equalsIgnoreCase(lastName)) {
-                doctor = d;
-                break;
-            }
-        }
+        return doctor;
     }
 
-    // Display result
-    if (doctor != null) {
-        System.out.println("\nDoctor found:");
-        System.out.println("ID: " + doctor.getId());
-        System.out.println("Name: " + doctor.getFirstName() + " " + doctor.getLastName());
-        System.out.println("Date of Birth: " + doctor.getDateOfBirth());
-        System.out.println("Phone: " + doctor.getPhone());
-        System.out.println("Gender: " + doctor.getGender());
-        System.out.println("Specialization: " + doctor.getSpecialization());
-    } else {
-        System.out.println("No matching doctor found.");
-    }
-
-    return doctor;
-}
-
-private static void editDoctor(Scanner scanner) {
-    scanner.nextLine();
-    Doctor doctor = doctorSearch(scanner);
-
-    if (doctor == null) {
-        System.out.println("Doctor not found. Cannot edit.");
-        System.out.print("Press Enter to return.");
+    /**
+     * Allows the user to edit a doctor's phone number and specialization.
+     * The user is prompted to enter new values or press Enter to keep existing ones.
+     * Validation is performed on the phone number input.
+     *
+     * @param scanner The Scanner object used to read user input from the console.
+     */
+    private static void editDoctor(Scanner scanner) {
         scanner.nextLine();
-        return;
-    }
+        Doctor doctor = doctorSearch(scanner);
 
-    System.out.println("Editing Doctor: " + doctor.getFirstName() + " " + doctor.getLastName());
-
-    // Ask for new phone number
-    System.out.print("New Phone (press Enter to keep current): ");
-    String phone = scanner.nextLine().trim();
-    if (!phone.isEmpty()) {
-        if (phone.matches("^\\d{10}$")) {
-            doctor.setPhone(phone);
-        } else {
-            System.out.println("Invalid phone number. Must be 10 digits. Keeping existing.");
+        if (doctor == null) {
+            System.out.println("Doctor not found. Cannot edit.");
+            System.out.print("Press Enter to return.");
+            scanner.nextLine();
+            return;
         }
-    }
 
-    // Ask for new specialization
-    System.out.print("New Specialization (press Enter to keep current): ");
-    String specialization = scanner.nextLine();
-    if (!specialization.isEmpty()) {
-        doctor.setSpecialization(specialization);
-    }
+        System.out.println("Editing Doctor: " + doctor.getFirstName() + " " + doctor.getLastName());
 
-    System.out.println("Doctor info updated successfully.");
-    System.out.print("\nPress Enter to return.");
-    scanner.nextLine();
-}
+        // Ask for new phone number
+        System.out.print("New Phone (press Enter to keep current): ");
+        String phone = scanner.nextLine().trim();
+        if (!phone.isEmpty()) {
+            if (phone.matches("^\\d{10}$")) {
+                doctor.setPhone(phone);
+            } else {
+                System.out.println("Invalid phone number. Must be 10 digits. Keeping existing.");
+            }
+        }
+
+        // Ask for new specialization
+        System.out.print("New Specialization (press Enter to keep current): ");
+        String specialization = scanner.nextLine();
+        if (!specialization.isEmpty()) {
+            doctor.setSpecialization(specialization);
+        }
+
+        System.out.println("Doctor info updated successfully.");
+        System.out.print("\nPress Enter to return.");
+        scanner.nextLine();
+    }
 
     // removes a doctor from the list using their ID and full name
     private static void deleteDoctor(Scanner scanner) {

@@ -9,6 +9,10 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Represents a doctor, which extends the Person class, with additional attributes for specialization and a list of patients.
+ * Provides functionality to manage a doctor's specialization and the patients assigned to them.
+ */
 public class Doctor extends Person {
     // Private attributes
     private ArrayList<Patient> patients;
