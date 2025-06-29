@@ -874,6 +874,7 @@ public class MedicationTrackingSystem {
      */
     private static void manageMedication(Scanner scanner) {
         int option = 0;
+        String input = "";
 
         while (option != 6) {
             clearConsole();
@@ -894,7 +895,19 @@ public class MedicationTrackingSystem {
                 switch (option) {
                     case 1: // Add a medication
                         System.out.println("\nMedication name:");
-                        String name = scanner.nextLine();
+                        String name = "";
+
+                        // Validation for medication name
+                        while (true) {
+                            input = scanner.nextLine();
+
+                            if (input.isEmpty()) {
+                                System.out.println("Please enter a medication name.");
+                            } else {
+                                name = input;
+                                break;
+                            }
+                        }
 
                         System.out.println("Dosage:");
                         double dose = 0d;
@@ -996,7 +1009,18 @@ public class MedicationTrackingSystem {
                                 Medication editMed = medications.get(i);
 
                                 System.out.println("New medication name:");
-                                editMed.setName(scanner.nextLine());
+
+                                // Validation for medication name
+                                while (true) {
+                                    input = scanner.nextLine();
+
+                                    if (input.isEmpty()) {
+                                        System.out.println("Please enter a new medication name.");
+                                    } else {
+                                        editMed.setName(input);
+                                        break;
+                                    }
+                                }
 
                                 System.out.println("New dose:");
                                 double editDose = 0d;
