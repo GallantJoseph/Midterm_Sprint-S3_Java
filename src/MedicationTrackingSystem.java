@@ -874,7 +874,6 @@ public class MedicationTrackingSystem {
      * @param scanner The Scanner object used to read user input from the console.
      */
     private static void manageMedication(Scanner scanner) {
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         int option = 0;
 
         while (option != 6) {
