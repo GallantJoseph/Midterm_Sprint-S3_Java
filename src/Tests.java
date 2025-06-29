@@ -1,3 +1,11 @@
+/*
+    Description: Midterm Sprint - Semester 3 - Tests Class
+    Authors:    Ashton Dennis
+                Justin Greenslade
+                Joseph Gallant
+    Dates: June 16, 2025 -
+ */
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
