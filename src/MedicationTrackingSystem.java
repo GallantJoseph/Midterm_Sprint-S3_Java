@@ -817,7 +817,7 @@ private static void manageMedication(Scanner scanner) {
                     Medication medication = new Medication(name, dose, quantity, expiry);
                     medications.add(medication);
 
-                    System.out.println("Medication created successfully!\nPress enter to return to menu...");
+                    System.out.println("\nMedication created successfully!\nPress enter to return to menu...");
                     scanner.nextLine();
                     break;
 
@@ -830,14 +830,14 @@ private static void manageMedication(Scanner scanner) {
                         if (medications.get(i).getName().equalsIgnoreCase(search1)) {
                             found1 = true;
                             System.out.println(medications.get(i));
-                            System.out.print("Press Enter to continue.");
+                            System.out.print("\nPress Enter to continue.");
                             scanner.nextLine();
                             break;
                         }
                     }
 
                     if (!found1) {
-                        System.out.println("No medication with that name was found.");
+                        System.out.println("\nNo medication with that name was found.");
                         System.out.print("Press Enter to continue.");
                         scanner.nextLine();
                     }

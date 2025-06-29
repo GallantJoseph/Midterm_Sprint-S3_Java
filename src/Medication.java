@@ -78,12 +78,12 @@
      }
      
      @Override
-public String toString() {
-    return "Medication ID: " + id +
-           "\nName: " + name +
-           "\nDosage: " + dose +
-           "\nQuantity in stock: " + quantity +
-           "\nExpiry Date: " + expiryDate;
-}
+    public String toString() {
+        return "Medication ID: " + id +
+            "\nName: " + name +
+            "\nDosage: " + dose +
+            "\nQuantity in stock: " + quantity +
+            "\nExpiry Date: " + expiryDate;
+    }
 
  }
