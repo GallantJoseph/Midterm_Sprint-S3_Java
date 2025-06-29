@@ -8,6 +8,11 @@
 
  import java.time.LocalDate;
 
+/**
+ * Represents a medication with attributes such as name, dosage, quantity, expiry date, 
+ * and a unique identifier. Provides functionality to manage medication details, 
+ * including updating stock levels and accessing or modifying information.
+ */
  public class Medication {
      // Private attributes
      private static int idCounter = 1;
@@ -18,7 +23,6 @@
      private LocalDate expiryDate;
  
      // Constructors
- 
      /**
       * Creates a new medication with the given information.
       *
@@ -47,8 +51,6 @@
          this.quantity = medication.quantity;
          this.expiryDate = medication.expiryDate;
      }
- 
-     // Getters and Setters
  
      /**
       * Gets the name of the medication.
